@@ -1,0 +1,42 @@
+# Brooklyn Nine Nine
+
+<i>Target IP: 10.10.213.175</i>
+
+<i>nmap scan</i><br>
+<code>PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.2.38.40
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 3
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_-rw-r--r--    1 0        0             119 May 17  2020 note_to_jake.txt
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 167f2ffe0fba98777d6d3eb62572c6a3 (RSA)
+|   256 2e3b61594bc429b5e858396f6fe99bee (ECDSA)
+|_  256 ab162e79203c9b0a019c8c4426015804 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-title: Site doesn't have a title (text/html).
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</code>
+<p>Generally we have FTP, SSH, Apache</p><br>
+<p>Looks like we can connect to ftp with anonymous creds. And there is a file that we can read.</p>
+<img src="https://ibb.co/17x5vKw">
+<img src="`https://ibb.co/Vv207bx" alt="note_to_jake.txt">
+<p>From this contents we can understand that jake's password is weak. Therefore we can try to bruteforce his password to ssh using hydra.</p>
+```hydra -l jack -P /usr/share/wordlists/rockyou.txt ssh://10.10.213.175```
+<p>Looks like it does not make sense.</p>
+<p>Let's look at the apache server.</p>
+<img src="./img/3.png" alt="apache server">
+<p>There is a commet about stenography, but let's try gobuster first. Nothing interesting.</p>
+<p>I got the image. <img src="https://ibb.co/8B5xktR" alt="The image"></p>
