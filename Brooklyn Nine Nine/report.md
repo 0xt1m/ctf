@@ -55,7 +55,7 @@ Enjoy!!</code>
 # Privilege Escalation
 <p>Besides the file <b>user.txt</b> we have the file named <b>nano.save</b></p>
 <p>Using <code>sudo -l</code> We found that we can use nano as sudo without password.</p>
-<p>Having the possibility to use nano with sudo privileges open a lot of ways for us to get the root privileges. I am going to change the <code>/etc/passwd</code> file. I will add a new root user there with my own password.</p>
+<p>The possibility to use nano with sudo privileges opens a lot of ways to get the root privileges for us. I am going to change the <code>/etc/passwd</code> file. I will add a new root user there with my own password.</p>
 <b>WVLY0mgH0RtUI = mrcake</b>
 <p>I am going to use the hash there.</p>
 <p>I added the following line to the <code>/etc/passwd</code> using <code>sudo nano</code>: <br><code>root2:WVLY0mgH0RtUI:0:0:root:/root:/bin/bash</code><br>And now we can loging as <code>root2</code> with password <code>mrcake</code>using <code>su root2</code></p>
