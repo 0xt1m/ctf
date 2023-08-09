@@ -36,12 +36,10 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</code>
 <p>I tried to use steghide to extract the contents of the image, but it wants a password.</p>
 <p>I used <b>stegcracker</b> to crack the password and it turned out that the password was admin. Let's look at the contents. <img src="https://i.ibb.co/PQqQSfT/5.png" alt="5" border="0"></p>
 <p>We have something that looks like a password.</p>
-<code>
-Holts Password:
+<code>Holts Password:
 fluffydog12@ninenine
 
-Enjoy!!
-</code>
+Enjoy!!</code>
 <p>Let's check where we can login with the password.</p>
 
 <p>
@@ -50,8 +48,15 @@ Enjoy!!
 		<li>amy</li>
 		<li>jack</li>
 	</ul>
-	And we can suppose that trese is a user <b>holt</b>
+	And we can suppose that trere is a user <b>holt</b>
 </p>
 <p>Here we go. We can make ssh connection to the use holt with the password that we have got before. And now we have got the first flag.</p>
 
 # Privilege Escalation
+<p>Besides the file <b>user.txt</b> we have the file named <b>nano.save</b></p>
+<p>Using <code>sudo -l</code> We found that we can use nano as sudo without password.</p>
+<p>Having the possibility to use nano with sudo privileges open a lot of ways for us to get the root privileges. I am going to change the <code>/etc/passwd</code> file. I will add a new root user there with my own password.</p>
+<b>WVLY0mgH0RtUI = mrcake</b>
+<p>I am going to use the hash there.</p>
+<p>I added the following line to the <code>/etc/passwd</code> using <code>sudo nano</code>: <br><code>root2:WVLY0mgH0RtUI:0:0:root:/root:/bin/bash</code><br>And now we can loging as <code>root2</code> with password <code>mrcake</code>using <code>su root2</code></p>
+<p>Now we just have to go to the root directory and read the file root.txt</p>
