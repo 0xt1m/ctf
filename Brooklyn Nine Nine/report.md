@@ -31,7 +31,6 @@
 Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</code>
 <p>Generally we have FTP, SSH, Apache</p><br>
 <p>Looks like we can connect to ftp with anonymous. and there is a file that we can read.</p>
-<img src="https://ibb.co/17x5vKw">
-<p>From the note we know that jack's password is weak, but hydra and rockyou can't help us with it. <img src="https://ibb.co/Vv207bx" alt="message to jack"></p>
-
+<img src="https://i.ibb.co/LYfWk62/1.png" alt="1" border="0">
+<p>From the note we know that jack's password is weak, but hydra and rockyou can't help us with it. <img src="https://i.ibb.co/wKMZ987/2.png" alt="2" border="0"></p>
 
