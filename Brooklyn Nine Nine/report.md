@@ -1,7 +1,6 @@
 # Brooklyn Nine Nine
 
 <i>Target IP: 10.10.213.175</i>
-
 <i>nmap scan</i><br>
 <code>PORT   STATE SERVICE VERSION
 21/tcp open  ftp     vsftpd 3.0.3
@@ -34,3 +33,25 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</code>
 <img src="https://i.ibb.co/LYfWk62/1.png" alt="1" border="0">
 <p>From the note we know that jack's password is weak, but hydra and rockyou can't help us with it. <img src="https://i.ibb.co/wKMZ987/2.png" alt="2" border="0"></p>
 <p>Don't forget about the apache server. So if we go there it looks like this: <img src="https://i.ibb.co/dp91ZpN/4.png" alt="4" border="0"> And we can see that there is a comment about stenography. We can download the image and look what we can do with it <img src="brooklyn99.jpg" alt=""></p>
+<p>I tried to use steghide to extract the contents of the image, but it wants a password.</p>
+<p>I used <b>stegcracker</b> to crack the password and it turned out that the password was admin. Let's look at the contents. <img src="https://i.ibb.co/PQqQSfT/5.png" alt="5" border="0"></p>
+<p>We have something that looks like a password.</p>
+```
+Holts Password:
+fluffydog12@ninenine
+
+Enjoy!!
+```
+<p>Let's check where we can login with the password.</p>
+
+<p>
+	<b>Known users:</b>
+	<ul>
+		<li>amy</li>
+		<li>jack</li>
+	</ul>
+	And we can suppose that trese is a user <b>holt</b>
+</p>
+<p>Here we go. We can make ssh connection to the use holt with the password that we have got before. And now we have got the first flag.</p>
+
+# Privilege Escalation
