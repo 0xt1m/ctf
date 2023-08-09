@@ -36,12 +36,12 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</code>
 <p>I tried to use steghide to extract the contents of the image, but it wants a password.</p>
 <p>I used <b>stegcracker</b> to crack the password and it turned out that the password was admin. Let's look at the contents. <img src="https://i.ibb.co/PQqQSfT/5.png" alt="5" border="0"></p>
 <p>We have something that looks like a password.</p>
-```
+<code>
 Holts Password:
 fluffydog12@ninenine
 
 Enjoy!!
-```
+</code>
 <p>Let's check where we can login with the password.</p>
 
 <p>
