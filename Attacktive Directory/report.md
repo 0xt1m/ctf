@@ -37,3 +37,17 @@
 </p>
 
 **I am sorry for such a bad appearance, I am just learning to build articles in markdown**
+
+`What if I try to write some code here`
+*maaaan, it looks like it is much more comfortable to use the special characters instead of the tags*
+
+**I found a lot of useful information about markdown *[here](https://www.markdownguide.org/cheat-sheet/)***
+
+Also, I found there that we can make ==highlights==.
+And we can paste a pretty big piece of code:
+```python3
+import os
+print("hello my friend")
+print("This is it for now")
+```
+
