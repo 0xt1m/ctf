@@ -29,3 +29,11 @@ Things are getting interesting. Using **gobuster** we found 3 new paths.
 /index.html           (Status: 301) [Size: 0] [--> ./]
 /r                    (Status: 301) [Size: 0] [--> r/]
 ```
+
+**r** page:<br>
+![/r](img/2.png)
+
+**img** page:<br>
+![/img](img/3.png)<br>
+We got to more images there. Let's download and inspect them.
+![alice_door.jpg](alice_door.jpg) ![alice_door.png](alice_door.png)
