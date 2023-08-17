@@ -36,4 +36,10 @@ Things are getting interesting. Using **gobuster** we found 3 new paths.
 **img** page:<br>
 ![/img](img/3.png)<br>
 We got to more images there. Let's download and inspect them.<br>
-<img alt="alice_door.jpg" src="alice_door.jpg" width=30%> <img alt="alice_door.png" src="alice_door.png" width=30%>
+<img alt="alice_door.jpg" src="alice_door.jpg" width=30%> <img alt="alice_door.png" src="alice_door.png" width=30%><br>
+Using binwalk we found that there is something in the **alice_door.png**. Let's extract it. Looks like there is nothing interesting.
+Now I am going to look at the jpg image. Well, still nothing interesting.
+We could try to do gobuster few more times and we can get to the *http://wonderland.thm/r/a/b/b/i/t*
+We got this page:<br>
+![rabbit page](img/4.png)<br>
+And this interesting little string: `alice:HowDothTheLittleCrocodileImproveHisShiningTail`
