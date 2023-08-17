@@ -36,4 +36,4 @@ Things are getting interesting. Using **gobuster** we found 3 new paths.
 **img** page:<br>
 ![/img](img/3.png)<br>
 We got to more images there. Let's download and inspect them.
-![alice_door.jpg](alice_door.jpg) ![alice_door.png](alice_door.png)
+<img alt="alice_door.jpg" src="alice_door.jpg" width=50%> <img alt="alice_door.png" src="alice_door.png" width=50%>
