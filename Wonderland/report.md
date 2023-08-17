@@ -15,4 +15,17 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 Let's look at the http server using web browser.<br>
 ![The web page](img/1.png)<br>
-Let's download the image and look if there is anything interesting.
+Let's download the image and look if there is anything interesting.<br>
+![The image](white_rabbit_1.jpg)<br>
+Here is the image.
+Looks like we can extract something from there using steghide, but we need the password. Let's try to crack it.
+Probably there is no sense to crack it. I got a message there like this: 
+`follow the r a b b i t` what does it mean?
+Let's do **gobuster** to the http server.<br>
+
+Things are getting interesting. Using **gobuster** we found 3 new paths.
+```gobuster
+/img                  (Status: 301) [Size: 0] [--> img/]
+/index.html           (Status: 301) [Size: 0] [--> ./]
+/r                    (Status: 301) [Size: 0] [--> r/]
+```
