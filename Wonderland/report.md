@@ -43,3 +43,4 @@ We could try to do gobuster few more times and we can get to the *http://wonderl
 We got this page:<br>
 ![rabbit page](img/4.png)<br>
 And this interesting little string: `alice:HowDothTheLittleCrocodileImproveHisShiningTail`
+Those were credentials that let us into ssh. 
