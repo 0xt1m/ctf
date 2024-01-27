@@ -50,8 +50,8 @@ We can see that there is a user named robot. Go to his folder and we will find:
 This is what I have found in password.raw-md5<br>
 > robot:c3fcd3d76192e4007dfb496cca67e13b
 
-Let's crack the hash.
-`john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt robot_hash.txt`
+Let's crack the hash.<br>
+`john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt robot_hash.txt` <br>
 username: _robot_ <br>
 password: _abcdefghijklmnopqrstuvwxyz_
 
