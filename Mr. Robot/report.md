@@ -1,6 +1,13 @@
-<h1>IP: 10.0.4.5</h1>
+# Mr. Robot
+_IP: 10.0.4.5_
 
+The first thing I did was an nmap scan which you can find i this folder.
+Basicly, it did not tell us much, but I found out that there is site running.
+
+_The first thing I checked was:_
 https://10.0.4.5/robots.txt
+
+_This is what I've got:_
 User-agent: *
 fsocity.dic
 key-1-of-3.txt
