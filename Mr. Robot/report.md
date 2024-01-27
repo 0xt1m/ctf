@@ -7,13 +7,13 @@ Basicly, it did not tell us much, but I found out that there is site running.
 _The first thing I checked was:_
 https://10.0.4.5/robots.txt
 
-_This is what I've got:_
-User-agent: *
-fsocity.dic
+_This is what I've got:_<br>
+User-agent: *<br>
+fsocity.dic<br>
 key-1-of-3.txt
 
-https://10.0.4.5/key-1-of-3.txt
-073403c8a58a1f80d943455fb30724b9
+> [!NOTE]
+> _key-1-of-3.txt is a flag for ctf doers._
 
 Let's try to hack the hash:
 john --wordlist=fsocity.dic --format=raw-md4 hash.txt
