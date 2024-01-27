@@ -44,7 +44,7 @@ Use this command to upgrade the shell:
 `python -c 'import pty; pty.spawn("/bin/bash")'`
 
 We can see that there is a user named robot. Go to his folder and we will find:
-> key-2-of-3.txt - Second key for ctfers
+> key-2-of-3.txt - Second key for ctfers<br>
 > password.raw-md5
 
 This is what I have found in password.raw-md5
