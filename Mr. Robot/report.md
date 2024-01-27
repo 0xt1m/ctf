@@ -60,10 +60,10 @@ Change current user to robot.
 ## Almost there
 **Now we need to find a way to escalate our privileges.**
 
-We cannot run sudo. Let's look what we can do.
-I used the next command to find files that I can run with their owner privileges.
-`find / -perm -u=s -type f 2>/dev/null`
-One of these files was nmap.
+We cannot run sudo. Let's look what we can do.<br>
+I used the next command to find files that I can run with their owner privileges.<br>
+`find / -perm -u=s -type f 2>/dev/null`<br>
+One of these files was _nmap_.
 
 It is useful to have a simple hash if we need in any case.
 > WVLY0mgH0RtUI = mrcake
