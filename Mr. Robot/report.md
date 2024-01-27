@@ -69,7 +69,7 @@ It is useful to have a simple hash if we need in any case.
 > WVLY0mgH0RtUI = mrcake
 
 > [!NOTE]
-> https://gtfobins.github.io/
+> https://gtfobins.github.io/ <br>
 > Useful site to find ways for privilege escalation.
 
 To escalate our privileges with nmap I do:
