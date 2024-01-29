@@ -103,6 +103,16 @@ However, by default sudo will try to run a tool with the privileges of root user
 `sudo -u ippsec /usr/bin/time /bin/sh`<br>
 _It is better to escalate our privileges to *ippsec* before we upgrade our shell_<br>
 Let's look can we escalate our privileges to root.<br>
+I used the next command to find all the folders where I have the permissions to write.<br>
+`find / -writable -type d 2>/dev/null`<br>
+It gave a couple of them, but the interesting one for me was:<br>
+> /var/www/wordpress/.git <br>
+If we go there, there are two files owned by root.<br>
+I assume that root user run the rev file occassionally. But let's look at the processes to make sure.<br>
+I am going to use pspy64s to look at the processes. https://github.com/wildkindcc/Exploitation/blob/master/00.PostExp_Linux/pspy/pspy64s.
+I downloaded to my machine, started python http server and downloaded to the victim's machine.<br>
+For some reason it says that there is no storage left and I cannot download anything to the machine. However the only thing that I had to do was replace the rev script with my own which I had permission to do. My own script would a simple reverse shell coded in C. After root would run the rev script again I would get my root reverse-shell.
+
 
 
 
