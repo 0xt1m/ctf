@@ -9,5 +9,5 @@
        include("NetworkFileManagerPHP.php");
    }
    /* VGhhdCBwYXNzd29yZCBhbG9uZSB3b24ndCBoZWxwIHlvdSEgSGFzaGNhdCBzYXlzIHJ1bGVzIGFyZSBydWxlcw== */
-   /* That password alone won't help you! Hashcat says rules are rules */ 
-?
+?>
+

