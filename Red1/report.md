@@ -104,7 +104,8 @@ Let's look can we escalate our privileges to root.<br>
 I used the next command to find all the folders where I have permission to write.<br>
 `find / -writable -type d 2>/dev/null`<br>
 It gave a couple of them, but the interesting one for me was:<br>
-> /var/www/wordpress/.git <br>
+> /var/www/wordpress/.git 
+
 If we go there, there are two files owned by root.<br>
 I assume that the root user runs the rev file occasionally. But let's look at the processes to make sure.<br>
 I am going to use pspy64s to look at the processes. https://github.com/wildkindcc/Exploitation/blob/master/00.PostExp_Linux/pspy/pspy64s.
