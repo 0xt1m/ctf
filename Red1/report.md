@@ -14,7 +14,6 @@ Allow: /wp-admin/admin-ajax.php
 
 Sitemap: http://redrocks.win/wp-sitemap.xml
 ```
-
 I went to the sitemap and found that there was a user named:
 administrator
 
@@ -89,14 +88,13 @@ After a couple of minutes using the `ssh shell` the connection was closed. The a
 4. *ctrl-z*
 5. `stty raw -echo; fg`
 9. `export TERM=xterm`
-<br>
 So now we have our new shell. Let's look at how we can escalate our privileges.<br>
 The simplest way is to run `sudo -l` <br> 
 ```
 User john may run the following commands on red:
     (ippsec) NOPASSWD: /usr/bin/time
 ```
-This is what we got.<br>
+This is what we got.
 Go to https://gtfobins.github.io/gtfobins and find what we can do with /usr/bin/time.<br>
 `sudo /usr/bin/time /bin/sh`<br>
 However, by default sudo will try to run a tool with the privileges of the root user, but we have only privileges of ippsec, so we need to specify our user, so our command will look like:<br>
