@@ -56,7 +56,7 @@ define( 'DB_USER', 'john' );
 define( 'DB_PASSWORD', 'R3v_m4lwh3r3_k1nG!!' );
 ...
 ```
-We know that there is an open ssh port. If we try to use these credentials to ssh it does not work.<br>
+We know that there is an open _ssh_ port. If we try to use these credentials to _ssh_ it does not work.<br>
 Also, we know that there is a backdoor file. Let's download it and see what it looks like.<br>
 `http://redrocks.win/NetworkFileManagerPHP.php?key=php://filter/convert.base64-encode/resource=NetworkFileManagerPHP.php`<br>
 Got a piece of code with another base64 line that says:<br>
@@ -107,7 +107,7 @@ It gave a couple of them, but the interesting one for me was:<br>
 > /var/www/wordpress/.git 
 
 If we go there, there are two files owned by root.<br>
-I assume that the root user runs the rev file occasionally. But let's look at the processes to make sure.<br>
+I assume that the root user runs the _rev_ file occasionally. But let's look at the processes to make sure.<br>
 I am going to use pspy64s to look at the processes. https://github.com/wildkindcc/Exploitation/blob/master/00.PostExp_Linux/pspy/pspy64s.
 I downloaded it to my machine, started the Python HTTP server, and downloaded it to the victim's machine.<br>
 For some reason, it says that there is no storage left and I cannot download anything to the machine. However, the only thing that I had to do was replace the rev script with my own which I had permission to do. My own script would be a simple reverse shell coded in C. After root would run the rev script again I would get my root reverse-shell.
