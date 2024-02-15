@@ -1,0 +1,44 @@
+Starting Nmap 7.93 ( https://nmap.org ) at 2024-02-15 12:00 PST
+Nmap scan report for blog.thm (10.10.152.91)
+Host is up (0.20s latency).
+Not shown: 996 closed tcp ports (conn-refused)
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 578ada90baed3a470c05a3f7a80a8d78 (RSA)
+|   256 c264efabb19a1c87587c4bd50f204626 (ECDSA)
+|_  256 5af26292118ead8a9b23822dad53bc16 (ED25519)
+80/tcp  open  http        Apache httpd 2.4.29 ((Ubuntu))
+|_http-title: Billy Joel&#039;s IT Blog &#8211; The IT blog
+|_http-generator: WordPress 5.0
+| http-robots.txt: 1 disallowed entry 
+|_/wp-admin/
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+Service Info: Host: BLOG; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|   Computer name: blog
+|   NetBIOS computer name: BLOG\x00
+|   Domain name: \x00
+|   FQDN: blog
+|_  System time: 2024-02-15T17:01:14+00:00
+| smb2-security-mode: 
+|   311: 
+|_    Message signing enabled but not required
+|_nbstat: NetBIOS name: BLOG, NetBIOS user: <unknown>, NetBIOS MAC: 000000000000 (Xerox)
+| smb2-time: 
+|   date: 2024-02-15T17:01:14
+|_  start_date: N/A
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_clock-skew: mean: -3h00m05s, deviation: 0s, median: -3h00m05s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 49.71 seconds
