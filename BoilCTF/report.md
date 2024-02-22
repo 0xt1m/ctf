@@ -41,3 +41,11 @@ Joomla version is: 3.9.12
 tests/codeception/\_support/Shared/UserCredentials.php
 
 http://boilctf.thm/joomla/media/editors/
+
+```
+codemirror/
+none/
+tinymce/
+```
+
+![log.txt](./imgs/log.txt.png)
