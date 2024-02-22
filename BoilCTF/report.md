@@ -94,4 +94,7 @@ openssl passwd -6 -salt xyz yourpass
 $6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.
 sed -i 's/^basterd:[^:]\*:/basterd:$6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.:/' /etc/shadow
 ```
-And that let me connect via _ssh_.
+And that let me connect via _ssh_.<br>
+### A little bit of hardening
+To prevent privilege escalation with the _find_ command need to do this:<br>
+`chmod u-s /usr/bin/find`
