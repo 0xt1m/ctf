@@ -42,8 +42,8 @@ Joomla version is: 3.9.12
 ```
 
 Also I spent a lot of time visiting all the folders, which was a really bad idea. Some interesting stuff that I found there, even though they were not useful at all.
-tests/codeception/\_support/Shared/UserCredentials.php
 ```
+tests/codeception/\_support/Shared/UserCredentials.php
 http://boilctf.thm/joomla/media/editors/
 
 codemirror/
@@ -59,7 +59,7 @@ http://boilctf.thm/joomla/_test/index.php?plot=LINUX<br>
 But if we change it to:
 http://boilctf.thm/joomla/_test/index.php?plot=;whoami and click on the Select Host button<br>
 we get some additional result there, which is a response to our command:
-![whoami](./imgs/whoami)
+![whoami](./imgs/whoami.png)
 
 I set up an _nc_ listener on port *2222* and used a simple python reverse-shell which I found on the internet. Therefore, eventually my url looked like this:<br>
 ```
