@@ -36,5 +36,3 @@ I created one more shell just to make sure everything would be okay.<br>
 I went to `/home/bjoel` and found there `user.txt` but there was no flag. :( <br>
 I guessed that the user flag was in `/media/usb` but that give me nothing because I didn't have access to the usb folder.<br>
 After many unsuccessful tries to escalate my privileges, I ran `linpeas.sh` and it told me that I could use `[CVE-2021-3156] sudo Baron Samedit` so I googled it, downloaded the script, ran it on the victim's machine and easily got root.
-
-:bulb:
