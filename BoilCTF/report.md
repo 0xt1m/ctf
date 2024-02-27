@@ -1,7 +1,7 @@
 # BoilCTF
 IP: 10.10.8.187
 <br>
-First of all went to the IP in the browser and found the apache2 server running. Then I went to robot.txt and found some interesting stuff there:
+First of all, went to the IP in the browser and found the apache2 server running. Then I went to robot.txt and found some interesting stuff there:
 
 ```
 User-agent: *
@@ -53,8 +53,8 @@ tinymce/
 
 :bulb: After some time, I realized that I needed another tactic. I remembered that there was some weird thing on the _\_test_ page. So I went there. 
 ![sar2html](./imgs/sar2html.png)
-Then I googled sar2html exploit and found what I needed. It turns out that to exploit the thing we just need to change the url a little bit.<br>
-This is a good URL which supposed to give us something whatever.<br>
+Then I googled sar2html exploit and found what I needed. It turns out that to exploit the thing we just need to change the URL a little bit.<br>
+This is a good URL that is supposed to give us something whatever.<br>
 http://boilctf.thm/joomla/_test/index.php?plot=LINUX<br>
 But if we change it to:
 http://boilctf.thm/joomla/_test/index.php?plot=;whoami and click on the Select Host button<br>
