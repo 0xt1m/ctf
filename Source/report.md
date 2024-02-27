@@ -11,7 +11,7 @@ I went to https://source.thm:10000 and found there:<br>
 I looked for `MiniServ 1.890 exploit` in google and found a python script, which turned out to work.<br>
 
 Then I changed the script a little bit in order that I understand it and have more control over it.<br>
-Also, I found a good perl `reverse-shell`, set up an nc listener on port 2222 and ran my new script.
+Also, I found a good perl `reverse-shell`, set up `python3 -m http.server`, set up an `nc -lvnp 2222` and ran my new script.
 ```
 import os
 
