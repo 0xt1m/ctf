@@ -1,0 +1,1 @@
+# Nmap 7.94SVN scan initiated Sat Mar  2 01:28:05 2024 as: nmap -sC -sV -p- -oN ../../../../../home/tim/Documents/ctf/Valley/nmap_scan valley.thm
