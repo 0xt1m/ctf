@@ -1,0 +1,129 @@
+Crackme 1:
+chmod +x crackme1
+./crackme1
+
+Crackme 2:
+chmod +x crackme2
+It requires the password
+
+strings crackme2 - Got the password.
+./crackme2 <password> - got the flag
+
+Crackme 3:
+privileges to crackme3
+
+Usage: ./crackme3 PASSWORD (looks like the password should be upper case)
+
+strings crackme3
+interesting strings:
+Usage: %s PASSWORD
+malloc failed
+ZjByX3kwdXJfNWVjMG5kX2xlNTVvbl91bmJhc2U2NF80bGxfN2gzXzdoMW5nNQ== #Lets decode the base64
+Correct password!
+Come on, even my aunt Mildred got this one!
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+;*2$"8
+
+from decoded string we've got our flag:
+f0r_y0ur_5ec0nd_le55on_unbase64_4ll_7h3_7h1ng5
+
+Crackme 4:
+Try to execute
+
+Usage : ./crackme4 password
+This time the string is hidden and we used strcmp
+
+The strcmp() compares two strings character by character. If the strings are equal, the function returns 0.
+
+radare2 crackme4
+f
+
+does not help. I think we have to somehow hack the strcmp function.
+
+the easiest way is to use ltrace. It intercepts and records the dynamic library calls which are called by the executed process and the signals which are received by that process
+
+command: ltrace ./crackme4 "test"
+__libc_start_main(0x400716, 2, 0x7fff7eaf5c28, 0x400760 <unfinished ...>
+strcmp("my_m0r3_secur3_pwd", "test")                                                                         = -7
+printf("password "%s" not OK\n", "test"password "test" not OK
+)                                                                     = 23
++++ exited (status 0) +++
+
+And here we go.
+
+Crackme 5:
+It wants us to dig deeper.
+Using strings we know that the program uses strncmp and strlen. It seems interesting now.
+
+Using ltrace we've got:
+__libc_start_main(0x400773, 1, 0x7fff40777688, 0x4008d0 <unfinished ...>
+puts("Enter your input:"Enter your input:
+)                                                                                    = 18
+__isoc99_scanf(0x400966, 0x7fff40777520, 1, 0x7f2078ea30e01234
+)                                                  = 1
+strlen("1234")                                                                                               = 4
+strlen("1234")                                                                                               = 4
+strlen("1234")                                                                                               = 4
+strlen("1234")                                                                                               = 4
+strlen("1234")                                                                                               = 4
+strncmp("1234", "OfdlDSA|3tXb32~X3tX@sX`4tXtz", 28)                                                          = -30
+puts("Always dig deeper"Always dig deeper
+)                                                                                    = 18
++++ exited (status 0) +++
+
+OfdlDSA|3tXb32~X3tX@sX`4tXt
+
+Easy money :)
+
+
+Crackme 6:
+Usage : ./crackme6 password
+Good luck, read the source
+
+strings does not give any useful information
+
+using objdump we fount that there are intersting functions like:
+my_secure_test
+compare_pwd
+main
+
+Eventually, the easiest way is to use ghidra. Few minutes and we got the the password while validating is going through my_secure_test function. We can see there some conditions and it is easy to understand that the password is 1337_pwd
+
+
+Crackme 7:
+This time I ran ghidra again. First I found the giveFlag function. Then I went to the main function and found there:
+else if (local_14 == 0x7a69) {
+python3
+print(0x7a69) # it gives us 31337
+
+go to the there are 3 options, but we write our number and get the flag.
+flag{much_reversing_very_ida_wow}
+
+
+Crackme 8:
+Now we go to ghidra as well.
+
+We have got the main function.
+And also, we have the giveFlag function. 
+
+iVar2 = atoi((char *)param_2[1]) # atoi - Convert string to integer
+
+I dont know if it was the right way, but I did it like the previous task and that worked.
+
+if (iVar2 == -0x35010ff3) { # I found this condition in the giveFlag function. 
+-889262067 # Translated the number.
+
+./crackme8 -889262067
+flag{at_least_this_cafe_wont_leak_your_credit_card_numbers}
+
+Here you go.
+
+
+
+
+
+
+
+
+
+
