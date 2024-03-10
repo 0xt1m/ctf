@@ -9,9 +9,13 @@
 - `echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
 - `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoer`<br>
 - 'groups`<br>
-
 https://gtfobins.github.io/<br>
-linpeas.sh<br>
+<hr>
+
+### Basic Linux enumeration
+https://cyberlab.pacific.edu/resources/linux-enumeration-cheat-sheet
+
++ linpeas.sh<br>
 
 Get Privilege Escalation vectors:<br>
 - LinPeas: https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS<br>
