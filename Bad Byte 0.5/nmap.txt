@@ -1,0 +1,26 @@
+# Nmap 7.94SVN scan initiated Sat Mar  9 17:52:13 2024 as: nmap -p30024 -sC -sV -oN nmap.txt bb.thm
+Nmap scan report for bb.thm (10.10.96.2)
+Host is up (0.28s latency).
+
+PORT      STATE SERVICE VERSION
+30024/tcp open  ftp     vsftpd 3.0.3
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 ftp      ftp          1743 Mar 23  2021 id_rsa
+|_-rw-r--r--    1 ftp      ftp            78 Mar 23  2021 note.txt
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.2.116.12
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 2
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+Service Info: OS: Unix
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Mar  9 17:52:19 2024 -- 1 IP address (1 host up) scanned in 6.01 seconds
