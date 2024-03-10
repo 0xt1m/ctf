@@ -17,7 +17,7 @@ https://cyberlab.pacific.edu/resources/linux-enumeration-cheat-sheet
 
 + linpeas.sh<br>
 
-Get Privilege Escalation vectors:<br>
+**Get Privilege Escalation vectors:**<br>
 - LinPeas: https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS<br>
 - LinEnum: https://github.com/rebootuser/LinEnum<br>
 - LES (Linux Exploit Suggester): https://github.com/mzet-/linux-exploit-suggester<br>
