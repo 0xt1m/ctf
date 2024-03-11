@@ -1,0 +1,5 @@
+Not shown: 65532 closed tcp ports (conn-refused)
+PORT      STATE SERVICE
+80/tcp open  http    nginx 1.16.1
+6498/tcp open  ssh
+65524/tcp open  http    Apache httpd 2.4.43 ((Ubuntu)) 
