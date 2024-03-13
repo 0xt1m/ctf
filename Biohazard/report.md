@@ -32,3 +32,9 @@ key3: 3aXRoX3Zqb2x0
 cGxhbnQ0Ml9jYW5fYmVfZGVzdHJveV93aXRoX3Zqb2x0
 plant42_can_be_destroy_with_vjolt
 ```
+<hr>
+```
+SSH
+umbrella_guest:T_virus_rules
+weasker login password, stars_members_are_my_guinea_pig
+```
