@@ -49,8 +49,9 @@ hydra -L users.txt -P passwords.txt ssh://fowsniff.thm -t 20
 I connected via `ssh` and did:<br>
 ```
 groups
-
 # Found myself in the users group
 
 # to find which files the group can execute
 find / -type f -executable -group users 2>/dev/null
+/opt/cube/cube.sh
+```

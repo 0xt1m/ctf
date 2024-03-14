@@ -1,0 +1,29 @@
+# Nmap 7.94SVN scan initiated Wed Mar 13 23:02:36 2024 as: nmap -sC -sV -p25,80,55006,55007 -oN nmap.txt golden.thm
+Nmap scan report for golden.thm (10.10.139.88)
+Host is up (0.27s latency).
+
+PORT      STATE SERVICE  VERSION
+25/tcp    open  smtp     Postfix smtpd
+|_ssl-date: TLS randomness does not represent time
+| ssl-cert: Subject: commonName=ubuntu
+| Not valid before: 2018-04-24T03:22:34
+|_Not valid after:  2028-04-21T03:22:34
+|_smtp-commands: ubuntu, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+80/tcp    open  http     Apache httpd 2.4.7 ((Ubuntu))
+|_http-title: GoldenEye Primary Admin Server
+|_http-server-header: Apache/2.4.7 (Ubuntu)
+55006/tcp open  ssl/pop3 Dovecot pop3d
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server
+| Not valid before: 2018-04-24T03:23:52
+|_Not valid after:  2028-04-23T03:23:52
+|_ssl-date: TLS randomness does not represent time
+|_pop3-capabilities: USER SASL(PLAIN) UIDL RESP-CODES TOP CAPA AUTH-RESP-CODE PIPELINING
+55007/tcp open  pop3     Dovecot pop3d
+|_pop3-capabilities: SASL(PLAIN) UIDL AUTH-RESP-CODE USER STLS TOP CAPA RESP-CODES PIPELINING
+|_ssl-date: TLS randomness does not represent time
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server
+| Not valid before: 2018-04-24T03:23:52
+|_Not valid after:  2028-04-23T03:23:52
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Mar 13 23:03:17 2024 -- 1 IP address (1 host up) scanned in 40.56 seconds
