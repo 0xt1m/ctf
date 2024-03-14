@@ -10,6 +10,8 @@
 - `echo "vickie ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers`<br>
 - `groups`<br>
     - `docker` (https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-security/docker-breakout-privilege-escalation)
+- `find / -type f -executable -group users 2>/dev/null`
+    - To find a file that can be executed by a specific group.
 
 https://gtfobins.github.io/<br>
 <hr>
