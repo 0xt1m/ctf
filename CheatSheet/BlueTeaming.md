@@ -6,7 +6,7 @@ Install `pstree`
 sudo yum install psmisc
 ```
 
-## Useful commands:
+### Useful commands:
 **To see active shells.**
 ```
 who
