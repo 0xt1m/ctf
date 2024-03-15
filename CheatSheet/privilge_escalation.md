@@ -3,7 +3,7 @@
 ## Linux
 - `getcap -r / 2>/dev/null`<br>
 - `find / -perm -u=s -type f 2>/dev/null`<br>
-    - harden: `chmod u-s /usr/bin/find`<br>
+    - Harden: `chmod u-s /usr/bin/find`<br>
 - `find -writable 2>/dev/null | cut -d "/" -f 2 | sort -u`<br>
 - `find / -writable 2>/dev/null | grep home | cut -d "/" -f 2,3 | sort -u`<br>
 - `sudo -V` to check sudo version, which might be vulnerable.<br>
