@@ -9,3 +9,9 @@ xterm
 ```
 ### Nmap
 `-min-rate=10000` to speed up `nmap` scan.
+
+
+### spawn a reverse-shell
+```
+/bin/bash -p
+```
