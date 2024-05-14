@@ -1,0 +1,32 @@
+<h1>Clock</h1>
+
+<p>From <code>nmap</code> I know that there is a few open ports: 22, 80, 3324, 8000</p>
+
+<img src="./imgs/port80.png" alt="">
+<p>Looks like we cannot really access it. Same on port 8000.</p>
+<p>I went to <code>robots.txt</code>on port 8000 and found the first flag</p>
+<img src="./imgs/flag1.png" alt="">
+<p>Let's run ffuf to find more pathes.</p>
+<code>ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt -u "http://clocky.thm:8000/FUZZ.zip" -c -t 300</code>
+<p>I used this command and found index.zip file. <br>Let's check it out.</p>
+<p>Now we got the second flag</p>
+<p>Let's check the app.py file</p>
+<p>
+    Here is couple of interesting things:<br>
+    <pre>
+    connection = pymysql.connect(host="localhost",
+								user="clocky_user",
+								password=db,
+								db="clocky",
+								cursorclass=pymysql.cursors.DictCursor)
+    </pre><br>
+    <pre>@app.route("/administrator", methods=["GET", "POST"])</pre><br>
+    <pre>@app.route("/forgot_password", methods=["GET", "POST"])</pre><br>
+    <pre>@app.route("/password_reset", methods=["GET"])</pre><br>
+    <pre>
+        # Not done (11/05-2023, <strong>clarice</strong>)
+        # user_provided_token = request.args.get("TEMPORARY")
+    </pre><br>
+    Also, from the app.py file we know that the app is running on port 8080.
+    <img src="./imgs/port8080.png" alt="">
+</p>
