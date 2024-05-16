@@ -1,32 +1,70 @@
-<h1>Clock</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Clock</h1>
+    
+        <p>From <code>nmap</code> I know that there is a few open ports: 22, 80, 3324, 8000, 8080</p>
+    
+        <img src="./imgs/port80.png" alt="">
+        <p>Looks like we cannot really access it. Same on port 8000.</p>
+        <p>I went to <code>robots.txt</code> on port 8000 and found the first flag</p>
+        <img src="./imgs/flag1.png" alt="">
+        <p>Let's run ffuf to find more pathes.</p>
+        <code>ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt -u "http://clocky.thm:8000/FUZZ.zip" -c -t 300</code>
+        <p>I used this command and found index.zip file. <br>Let's check it out.</p>
+        <p>Now we got the second flag</p>
+        <p>Let's check the app.py file</p>
+        <p>
+            Here is couple of interesting things:<br>
+            <pre>
+            connection = pymysql.connect(host="localhost",
+                                        user="clocky_user",
+                                        password=db,
+                                        db="clocky",
+                                        cursorclass=pymysql.cursors.DictCursor)
+            </pre><br>
+            <pre>
+                1. @app.route("/administrator", methods=["GET", "POST"])
+                2. @app.route("/forgot_password", methods=["GET", "POST"])
+                3. @app.route("/password_reset", methods=["GET"])
+            </pre><br>
+            
+            <pre>
+                # Not done (11/05-2023, <strong>clarice</strong>)
+                # user_provided_token = request.args.get("TEMPORARY")
+            </pre><br>
+        </p>
 
-<p>From <code>nmap</code> I know that there is a few open ports: 22, 80, 3324, 8000</p>
-
-<img src="./imgs/port80.png" alt="">
-<p>Looks like we cannot really access it. Same on port 8000.</p>
-<p>I went to <code>robots.txt</code>on port 8000 and found the first flag</p>
-<img src="./imgs/flag1.png" alt="">
-<p>Let's run ffuf to find more pathes.</p>
-<code>ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt -u "http://clocky.thm:8000/FUZZ.zip" -c -t 300</code>
-<p>I used this command and found index.zip file. <br>Let's check it out.</p>
-<p>Now we got the second flag</p>
-<p>Let's check the app.py file</p>
-<p>
-    Here is couple of interesting things:<br>
-    <pre>
-    connection = pymysql.connect(host="localhost",
-								user="clocky_user",
-								password=db,
-								db="clocky",
-								cursorclass=pymysql.cursors.DictCursor)
-    </pre><br>
-    <pre>@app.route("/administrator", methods=["GET", "POST"])</pre><br>
-    <pre>@app.route("/forgot_password", methods=["GET", "POST"])</pre><br>
-    <pre>@app.route("/password_reset", methods=["GET"])</pre><br>
-    <pre>
-        # Not done (11/05-2023, <strong>clarice</strong>)
-        # user_provided_token = request.args.get("TEMPORARY")
-    </pre><br>
-    Also, from the app.py file we know that the app is running on port 8080.
-    <img src="./imgs/port8080.png" alt="">
-</p>
+        Also, from the app.py file we know that the app is running on port 8080.
+            <img src="./imgs/port8080.png" alt=""><br>
+            
+            <p>These are the most interesting lines in the code for us:</p><br>
+            <img src="./imgs/interesting.png" alt="">
+            <p>
+                Let's break it down. <br>
+                It takes current time than adds " . " and username in uppercase. So in result before hasing the line would look like this: <br>
+                <code>2024-05-14 14:36:49.21 . CHARLIE</code> <br>
+                Than it hashes it, so eventually it looks like this: <br>
+                <code>79f916cf80f25b31cc1e79f1fe578410d0525f52</code> <br>
+                And then the line becomes a new token for the username. <br>
+                
+                I am going to try to write a python script that will do 3 things: <br>
+                1. Capture the time <br>
+                2. Create the a token <br>
+                3. Make a post request to the page to update the token for particular user. <br>
+    
+                The problem is that I am not sure if that is going to be fast enough. The other way is to bruteforce it.
+            </p>
+            <p>
+                This way it didn't work, so I am going to create a script that will create all possible hashes for the last 10 seconds.
+            </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+.content {
+    width: 80%;
+    font-family: Arial;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: relative;
+}
+
+img {
+    width: 600px;
+}
