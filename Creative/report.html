@@ -1,0 +1,27 @@
+<h1>Creative</h1>
+<p>
+    Open ports:
+    <ul>
+        <li>22 - SSH</li>
+        <li>80 nginx</li>
+    </ul>
+
+    Interesting url: <code>http://creative.thm/?contact-message=tytytytytyyt+kdlkfj#contact</code>
+</p>
+<p>
+    I checked some commong things, but did not found anything interesting. A good move from here is using <code>ffuf</code>. <br>
+    I looked for some pathes with this command: <br>
+    <code>ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt -u http://creative.thm/FUZZ -c -t 300</code><br>
+    Subdomain enumeration with ffuf: <br>
+    <code>ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -H "Host: FUZZ.creative.thm" -u http://creative.thm -c -fs 178 -t 300</code><br>
+    <img src="./imgs/beta.png" alt="">
+</p>
+<p>
+    Add <code>blog.creative.thm</code> to <code>/etc/hosts</code> with the same IP.
+    <img src="./imgs/beta.thm.png" alt="">
+</p>
+<p>
+    When we put there a url it just tries to show the page. <br>
+    
+    So now I am going to make a python script that will scan open ports that could be not open to public, but I might access them through the form.
+</p>
