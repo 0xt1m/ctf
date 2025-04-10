@@ -1,0 +1,24 @@
+# Nmap 7.94SVN scan initiated Tue Feb 25 16:15:46 2025 as: nmap -sC -sV -p22,9200 -O -oN nmap.txt haystack.htb
+Nmap scan report for haystack.htb (10.129.229.203)
+Host is up (0.041s latency).
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 2a:8d:e2:92:8b:14:b6:3f:e4:2f:3a:47:43:23:8b:2b (RSA)
+|   256 e7:5a:3a:97:8e:8e:72:87:69:a3:0d:d1:00:bc:1f:09 (ECDSA)
+|_  256 01:d2:59:b2:66:0a:97:49:20:5f:1c:84:eb:81:ed:95 (ED25519)
+9200/tcp open  http    nginx 1.12.2
+| http-methods: 
+|_  Potentially risky methods: DELETE
+|_http-server-header: nginx/1.12.2
+|_http-title: Site doesn't have a title (application/json; charset=UTF-8).
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose|specialized|storage-misc
+Running (JUST GUESSING): Linux 5.X|3.X|4.X (90%), Crestron 2-Series (86%), HP embedded (85%)
+OS CPE: cpe:/o:linux:linux_kernel:5.0 cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 cpe:/o:crestron:2_series cpe:/h:hp:p2000_g3
+Aggressive OS guesses: Linux 5.0 (90%), Linux 3.10 - 4.11 (90%), Linux 3.2 - 4.9 (90%), Linux 5.1 (90%), Linux 3.18 (88%), Crestron XPanel control system (86%), Linux 3.16 (86%), HP P2000 G3 NAS device (85%)
+No exact OS matches for host (test conditions non-ideal).
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb 25 16:16:03 2025 -- 1 IP address (1 host up) scanned in 17.37 seconds

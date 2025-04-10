@@ -1,0 +1,39 @@
+<h1>Academy</h1>
+<p>academy.htb</p>
+<h2>Nmap Scans</h2>
+<p>```
+sudo nmap -p- --min-rate=10000 academy.htb</p>
+<p>PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+33060/tcp open  mysqlx</p>
+<p>```</p>
+<p><img alt="port80" src="./imgs/80.png" />
+<img alt="login" src="./imgs/login.png" />
+<img alt="register" src="./imgs/register.png" /></p>
+<h2>I created a random user</h2>
+<p><img alt="dima" src="./imgs/dima.png" /></p>
+<h2>admin.php</h2>
+<p>There is an admin login page that looks just like the default login page. However, the new user doesn't work.
+<img alt="admin" src="./imgs/admin.png" /></p>
+<h2>BurpSuite</h2>
+<p>I opened BurpSuite and decided to go through different pages and see what I can do.
+Later on I found something interesting on the register page.
+<img alt="roleid" src="./imgs/roleid.png" /></p>
+<h2>Admin Role</h2>
+<p>I set <code>roleid</code> to <code>1</code> than went to the <code>admin.php</code> and got in.
+<img alt="admin-page" src="./imgs/admin-page.png" /></p>
+<h2>Subdomain</h2>
+<p>That's where I found a subdomain.
+<img alt="dev-staging" src="./imgs/dev-staging.png" />
+It looks like a page where we can see all the logs.
+Discovering a little bit more I realized that it was the <code>laravel</code> framework. Than I found an exploit <code>CVE-2018-15133</code> and used it to get a shell.</p>
+<h2>User Flag</h2>
+<p>Reading this file: <code>/var/www/html/academy/.env</code> I found a password for user <code>cry0l1t3</code> and sshed into it.
+Interesting that the user is part of group <code>adm</code>.</p>
+<h2>Root</h2>
+<p>In order to, not to spend too much time I used the hint and found that I had to read the audit logs. Using a tool called: <code>aureport</code> and the next command:
+<code>aureport --tty</code>
+I found a password to user <code>mrb3n</code></p>
+<p>Then, using <code>sudo -l</code> I found that the user can execute <code>composer</code> as a root. Than I found how to exploit it to get root.
+https://gtfobins.github.io/gtfobins/composer/#sudo</p>

@@ -1,0 +1,48 @@
+<h1>Haystack</h1>
+<h2>IP: 10.129.229.203</h2>
+<p>First of all I go to /etc/hosts and put 10.129.229.203 haystack.htb</p>
+<p><strong>OPEN PORTS:</strong>
+<code>PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+9200/tcp open  wap-wsp</code></p>
+<p>We have a webpage on port 80
+<img alt="web80.png" src="imgs/web80.png" /></p>
+<p>We have elasticsearch on port 9200</p>
+<p>Some searches:
+```</p>
+<h1>find all the indices</h1>
+<p>curl -X GET "http://haystack.htb:9200/_cat/indices?v"</p>
+<h1>Get all logs</h1>
+<p>curl -X GET "http://haystack.htb:9200/quotes/_search?pretty&amp;size=10000"
+```</p>
+<p>Then I used this to find all the base64 strings:
+<code>cat all_quotes.txt | grep -Eo '([A-Za-z0-9+/]{20,}={0,2})'</code></p>
+<p>After I decoded the <em>base64</em> strings I got this:
+```
+cGFzczogc3BhbmlzaC5pcy5rZXk=
+dXNlcjogc2VjdXJpdHkg</p>
+<h3></h3>
+<p>pass: spanish.is.key
+user: security 
+```</p>
+<p>Then I used next command to see open ports:
+```
+netstat -tulnp</p>
+<p>tcp        0      0 127.0.0.1:5601          0.0.0.0:*               LISTEN      -
+```</p>
+<p>I will have to set up ssh port forwarding to move on:</p>
+<p><code>ssh -L [local-port]:[remote-host]:[remote-port] [user]@[remote-host]
+ssh -L 5601:127.0.0.1:5601 security@haystack.htb</code></p>
+<p>This is our confirmation that port forwarding is working
+<img alt="kibana" src="./imgs/kibana.png" /></p>
+<p>The kibana version is 6.4.2
+Here is vulnerability: CVE-2018-17246</p>
+<p><code>curl -X GET "http://haystack.htb:9200/quotes/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": {
+    "match_phrase": {
+      "message": "Ejecutar comando :"
+    }
+  }
+}'</code></p>
+<p>Next, looking the kibana config especially at the <code>input.conf</code> file I found that it executes everything that is in <code>/opt/kibana/</code> named <code>logstash_*</code>. Therefore, I put a reverse shell there, and got root!</p>

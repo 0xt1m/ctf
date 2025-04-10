@@ -1,0 +1,106 @@
+{
+  "took" : 2,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 253,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "14",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "En América se desarrollaron importantes civilizaciones, como Caral (la civilización más antigua de América, la cual se desarrolló en la zona central de Perú), los anasazi, los indios pueblo, quimbaya, nazca, chimú, chavín, paracas, moche, huari, lima, zapoteca, mixteca, totonaca, tolteca, olmeca y chibcha, y las avanzadas civilizaciones correspondientes a los imperios de Teotihuacan, Tiahuanaco, maya, azteca e inca, entre muchos otros."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "19",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "Imperios español y portugués en 1790."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "22",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "También se instalaron en América del Sur repúblicas de pueblos de origen africano que lograron huir de la esclavitud a la que habían sido reducidos por los portugueses, como el Quilombo de los Palmares o el Quilombo de Macaco."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "24",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "En 1804, los esclavos de origen africano de Haití se sublevaron contra los colonos franceses, declarando la independencia de este país y creando el primer estado moderno con gobernantes afroamericanos."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "25",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "A partir de 1809,23​ los pueblos bajo dominio de España llevaron adelante una Guerra de Independencia Hispanoamericana, de alcance continental, que llevó, luego de complejos procesos, al surgimiento de varias naciones: Argentina, Bolivia, Colombia, Costa Rica, Panamá, Chile, Ecuador, El Salvador, Guatemala, Honduras, México, Nicaragua, Paraguay, Perú, Uruguay y Venezuela. En 1844 y 1898 el proceso se completaría con la independencia de República Dominicana y Cuba, respectivamente."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "26",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "En 1816, se conformó un enorme estado independiente sudamericano, denominado Gran Colombia, y que abarcó los territorios de los actuales Panamá, Colombia, Venezuela y Ecuador y zonas de Brasil, Costa Rica, Guyana, Honduras, Nicaragua y Perú. La República se disolvió en 1830."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "29",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "Tras su emancipación los países de América han seguido un desarrollo dispar entre sí. Durante el siglo XIX, Estados Unidos se afianzó como una potencia de carácter mundial y reemplazó a Europa como poder dominante en la región."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "40",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "En América Central, los ríos son cortos y corresponden principalmente a la vertiente atlántica. Estos ríos cumplen varias funciones, sirviendo incluso como fronteras; tal es el caso de los ríos Segovia o Coco (entre Honduras y Nicaragua), el río Lempa (Guatemala, El Salvador y Honduras) y el río San Juan (entre Costa Rica y Nicaragua). En esta zona, los lagos también son de menor extensión, destacando los lagos Nicaragua, Managua y Gatún, este último, construido por el hombre, ubicado en el Canal de Panamá, al cual le proporciona el agua necesaria para que los barcos salven las diferencias de nivel."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "41",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "Ya en América del Sur, reaparece la vertiente del Pacífico, aun cuando los ríos de la vertiente del Atlántico son más largos e importantes. Destacan en la parte sur del continente los ríos Orinoco, el sistema Paraná-Río de la Plata y el Amazonas. El río Amazonas es el río más caudaloso y más largo del mundo, y forma la cuenca hidrográfica más grande del planeta. Dentro de los lagos más importantes de América del Sur se cuenta con el lago de Maracaibo, el Titicaca, el Poopó y el Buenos Aires/General Carrera."
+        }
+      },
+      {
+        "_index" : "quotes",
+        "_type" : "quote",
+        "_id" : "44",
+        "_score" : 1.0,
+        "_source" : {
+          "quote" : "En cuanto a la flora de América del Norte, espacio en el cual se encuentran los Estados Unidos, Canadá y México, podemos encontrar pino, caoba, cedro, conifera, cactus, agave, en fin, más de 17 000 especies de plantas vasculares y más de 1,800 especies de plantas con flores.25​25"
+        }
+      }
+    ]
+  }
+}

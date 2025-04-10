@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 80%;
+        }
+    </style>
+    <title>Laboratory</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Laboratory</h1>
+        <p>First of all, I add <code>laboratory.htb</code> into my <code>/etc/hosts</code></p>
+        
+        <h3>Nmap Scan</h3>
+        <p>
+            <code>nmap -p- --min-rate=10000 laboratory.htb</code><br>
+            <img src="./imgs/nmap.png" alt="nmap"><br>
+        </p>
+
+        <h3>The Webpage</h3>
+        <p>
+            <img src="./imgs/website.png" alt="website">
+        </p>
+        <p>
+            We know that they use <code>ROT13</code> and <code>Base64</code><br>
+            <img src="./imgs/crypt.png" alt="crypt">
+        </p>
+
+        <p>
+            Some interesting feedbacks. First of all, now we know CEO.<br>
+            <img src="./imgs/feedback.png" alt="feedback">
+        </p>
+
+        <p>
+            Pretty quick I figured, I had to brute force subdomains, and this is the command I used.<br>
+            <code>wfuzz -w ./subs.txt -u https://laboratory.htb/ -H "Host:FUZZ.laboratory.htb" --hh 7254</code>
+        </p>
+
+        <h3>Git Lab</h3>
+        <p>After that I got into <code>git lab</code></p>
+        <p><i>If you get an error 502, try using a different browser</i></p>
+        <p>
+            After clicking around a little bit, I found this:<br>
+            <img src="./imgs/gitlabproject.png" alt="gitlabproject"><br>
+            <img src="./imgs/username.png" alt="username">
+        </p>
+
+        <h3>File Read Vulnerability</h3>
+        <p>
+            Clicking around, I found the <i>Help</i> page, and got the version of GitLab<br>
+            <img src="./imgs/version.png" alt="version">
+        </p>
+
+        <p>
+            After googling for about 2 seconds I found a <a href="https://github.com/anjai94/gitlab-file-read-exploit">GitHub repository</a> that explained the vulnerability and had the python script to exploit it.
+            Then I went to the <a href="https://hackerone.com/reports/827052">HackerOne</a> page of the vulnerability, and found that it can be turned into a <code>RCE</code>
+        </p>
+
+        <h3>Get a Shell</h3>
+        <p>
+            After messing around and researching for a little while, I found that there is a ready exploit that I can use in Metasploit.<br>
+            <code>exploit/multi/http/gitlab_file_read_rce</code><br>
+            So I set up the right options, ran the exploit and got the shell. (<code>benbody</code> is the user I created in <code>gitlab</code>)
+            <img src="./imgs/options.png" alt="options">
+        </p>
+
+        <h3>Becoming Dexter</h3>
+        <p>
+            Now, I have access to all the gitlab files. I was wondering if I had any access to maybe some databases or config files where I could change passwords.
+            However, later I googled how to change gitlab user password from terminal and found the official gitlab documentation that walked me through that.
+        </p>
+        <p>
+            First of all I had to run <code>GitLab Rails Console</code><br>
+            <code># gitlab-rails console</code><br>
+            Then find the user:<br>
+            <code># user = User.find_by_username 'dexter'</code><br>
+            Set a new password:<br>
+            <code>
+                # new_password = 'examplepassword'<br>
+                # user.password = new_password<br>
+                # user.password_confirmation = new_password<br>
+                # user.password_automatically_set = false
+            </code><br>
+            Save the user:<br>
+            <code>
+                # user.save
+            </code>
+        </p>
+
+        <p>
+            After this, I used the web interface to get login as <code>dexter</code>
+        </p>
+
+        <h3>User Flag</h3>
+        <p>
+            I looked around I found that dexter works on another project that I did not see before. And also I found some interesting stuff.<br>
+            <img src="./imgs/deedee.png" alt="deedee"><br>
+            <img src="./imgs/ssh.png" alt="ssh"><br>
+            And here I found an <code>id_rsa</code> which is a private key. Let's finally get our ssh shell.
+        </p>
+        <p>
+            For the first time it did not work. I was getting something like this:<br>
+            <img src="./imgs/crypterror.png" alt="crypterror"><br>
+            I googled it and eventually found this solution:<br>
+            <img src="./imgs/err-solution.png" alt="solution">
+        </p>
+        <p>
+            Then, I tried <code>ssh</code> again and got in.<br>
+            <code>ssh -i dexter_.ssh_id_rsa dexter@laboratory.htb</code>
+        </p>
+
+        <h3>Privilege Escalation</h3>
+        <p>
+            First of all, I look around to see what I can do. Check if I can run <code>sudo</code>. Check the version of <code>sudo</code>, etc. However, after I did:<br>
+            <code>find / -perm -u=s -type f 2>/dev/null</code> # A command to check what programs have <code>SetUID</code> permissions to run as root<br>
+            I notice something interesting.<br>
+            <img src="./imgs/docker-security.png" alt="docker-security"><br>
+            I googled it, but did not found much, so I assumed it was a custom script.
+        </p>
+
+        <p>
+            Then, I run <code>docker-security</code> with <code>ltrace</code> and see something that gives me an idea for privilege escalation.<br>
+            <img src="./imgs/chmod.png" alt="chmod"><br>
+            Here we can see that the script tries to run <code>chmod</code> but does not use the full path to it. Therefore, when the script calls <code>chmod</code> linux looks for
+            an executable in directories that are defined in the <code>PATH</code> system variable.
+        </p>
+
+        <p>
+            Knowing all of this, I created a custom <code>chmod</code> in the <code>tmp</code> directory, which was just:<br>
+            <code>/bin/sh</code><br>
+            <img src="./imgs/custom-chmod.png" alt="custom-chmod"><br>
+            Then, I changed the <code>PATH</code> variable:<br>
+            <code>
+                export PATH="/tmp:$PATH"
+            </code><br>
+            <img src="./imgs/path.png" alt="path"><br>
+            Then, I ran <code>/usr/local/bin/docker-security</code> and got <b>root</b>!<br>
+            <img src="./imgs/root-flag.png" alt="root-flag">
+        </p>
+    </div>
+</body>
+</html>
