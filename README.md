@@ -1,2 +1,2 @@
-# Hello, World!
-## I am going to post my notes here 🙂
+# Hi there!
+My ctf notes are here.
