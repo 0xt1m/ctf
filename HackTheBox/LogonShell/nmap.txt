@@ -1,0 +1,76 @@
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-23 14:18 EDT
+Stats: 0:01:50 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
+NSE Timing: About 95.56% done; ETC: 14:20 (0:00:00 remaining)
+Stats: 0:02:36 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
+NSE Timing: About 99.86% done; ETC: 14:21 (0:00:00 remaining)
+Nmap scan report for logonshell.htb (10.129.230.154)
+Host is up (0.36s latency).
+Not shown: 980 filtered tcp ports (no-response)
+PORT     STATE SERVICE       VERSION
+53/tcp   open  domain        Simple DNS Plus
+80/tcp   open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-title: Site doesn't have a title.
+|_http-server-header: Microsoft-IIS/10.0
+81/tcp   open  http          Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: 403 - Forbidden: Access is denied.
+88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-04-23 18:19:24Z)
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: edelweiss.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+443/tcp  open  ssl/http      Microsoft IIS httpd 10.0
+| http-title: Outlook
+|_Requested resource was https://logonshell.htb/owa/auth/logon.aspx?url=https%3a%2f%2flogonshell.htb%2fowa%2f&reason=0
+|_http-server-header: Microsoft-IIS/10.0
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+444/tcp  open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-title: Runtime Error
+|_http-server-header: Microsoft-IIS/10.0
+445/tcp  open  microsoft-ds?
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: edelweiss.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+808/tcp  open  ccproxy-http?
+1801/tcp open  msmq?
+2103/tcp open  msrpc         Microsoft Windows RPC
+2105/tcp open  msrpc         Microsoft Windows RPC
+2107/tcp open  msrpc         Microsoft Windows RPC
+3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: edelweiss.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+3269/tcp open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: edelweiss.htb0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc
+| Subject Alternative Name: DNS:dc, DNS:dc.edelweiss.htb
+| Not valid before: 2022-10-30T13:36:06
+|_Not valid after:  2027-10-30T13:36:06
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2025-04-23T18:20:29
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 171.08 seconds

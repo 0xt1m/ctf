@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 80%;
+        }
+    </style>
+    <title>LogonShell</title>
+</head>
+<body>
+    <div class="container">
+        <h1>LogonShell</h1>
+        <hr>
+        
+        <h3>Port Scan</h3>
+        <p>
+            <code>nmap -sC -sV logonshell.htb</code>
+        </p>
+        <p>
+            <img src="./imgs/nmap.png" alt="nmap"><br>
+            A lot of open ports. But immediately I notice the domain name <code>edelweiss.htb</code>.<br>
+            I added it to my <code>/etc/hosts</code>
+        </p>
+
+        <h3>Port 443</h3>
+        <p>
+            <img src="./imgs/ms-exchange.png" alt="ms-exchange">
+        </p>
+        <p>
+            I looked at the source code and found something that looked like a version.<br>
+            <img src="./imgs/version.png" alt="version">
+        </p>
+        <p>
+            I started googling I found some interesting words.<br>
+            <img src="./imgs/google.png" alt="google">
+        </p>
+          
+    </div>
+</body>
+</html>
