@@ -1,0 +1,28 @@
+# Nmap 7.94SVN scan initiated Thu Apr 24 08:10:11 2025 as: nmap -sC -sV -oN nmap.txt heapdriver.htb
+Nmap scan report for heapdriver.htb (10.129.96.184)
+Host is up (0.041s latency).
+Not shown: 995 closed tcp ports (conn-refused)
+PORT     STATE SERVICE       VERSION
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+4443/tcp open  http          Apache httpd 2.4.51 (OpenSSL/1.1.1l PHP/8.1.0)
+|_http-server-header: Apache/2.4.51 (Win64) OpenSSL/1.1.1l PHP/8.1.0
+|_http-title: HackTheBox WebShell
+8000/tcp open  http          Apache httpd 2.4.51 ((Win64) OpenSSL/1.1.1l PHP/8.1.0)
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-title: HackTheBox WebShell
+|_http-server-header: Apache/2.4.51 (Win64) OpenSSL/1.1.1l PHP/8.1.0
+Service Info: Host: localhost; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 7h59m59s
+| smb2-time: 
+|   date: 2025-04-24T20:10:24
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Apr 24 08:10:32 2025 -- 1 IP address (1 host up) scanned in 20.64 seconds

